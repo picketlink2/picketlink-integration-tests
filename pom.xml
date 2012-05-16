@@ -23,9 +23,9 @@
 		<module>integration-tests</module>
 		<module>integration-tests/integration-webapps/claims</module>
 		<module>integration-tests/integration-webapps/authenticator</module>
-<!-- 		<module>integration-tests/jboss-as7</module> -->
+		<module>integration-tests/jboss-as7</module>
 		<module>integration-tests/jboss-as5</module>
-<!-- 		<module>integration-tests/jboss-as6</module> -->
-<!-- 		<module>integration-tests/tomcat-6</module> -->
+		<module>integration-tests/jboss-as6</module>
+		<module>integration-tests/tomcat-6</module>
 	</modules>
 </project>
