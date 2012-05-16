@@ -1,8 +1,8 @@
 /*
  * JBoss, Home of Professional Open Source.
- * Copyright 2008, Red Hat Middleware LLC, and individual contributors
+ * Copyright 2012, Red Hat, Inc., and individual contributors
  * as indicated by the @author tags. See the copyright.txt file in the
- * distribution for a full listing of individual contributors. 
+ * distribution for a full listing of individual contributors.
  *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
@@ -19,32 +19,24 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.picketlink.test.trust.ws;
 
-import javax.jws.HandlerChain;
-import javax.jws.WebMethod;
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
+package org.picketlink.test.integration.util;
 
 /**
- * POJO that is exposed as WS
- * @author Anil.Saldhana@redhat.com
- * @since Apr 11, 2011
+ * @author <a href="mailto:psilva@redhat.com">Pedro Silva</a>
+ *
  */
-@WebService
-@SOAPBinding(style = SOAPBinding.Style.RPC)
-@HandlerChain(file="/authorize-handlers.xml") 
-public class POJOBean
-{
-   @WebMethod
-   public String echo(String echo)
-   {
-      return echo;
-   }
+public class TestUtil {
 
-   @WebMethod
-   public String echoUnchecked(String echo)
-   {
-      return echo;
-   }
+    private static final String TEST_CONTAINER_BIND_ADDRESS = "test.container.bind.address";
+    private static final String TEST_CONTAINER_BIND_HTTP_PORT = "test.container.bind.http.port";
+
+    public static String getTargetURL(String uri) {
+        return "http://" + getServerAddress() + ":" + System.getProperty(TEST_CONTAINER_BIND_HTTP_PORT, "28080") + uri;
+    }
+
+    public static String getServerAddress() {
+        return System.getProperty(TEST_CONTAINER_BIND_ADDRESS, "localhost");
+    }
+
 }

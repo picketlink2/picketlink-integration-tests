@@ -23,10 +23,15 @@ package org.picketlink.test.trust.tests;
 
 import static org.junit.Assert.assertTrue;
 
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.api.TargetsContainer;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.picketlink.identity.federation.bindings.tomcat.PicketLinkAuthenticator;
+import org.picketlink.test.integration.util.MavenArtifactUtil;
+import org.picketlink.test.integration.util.TestUtil;
 
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.WebConversation;
@@ -35,27 +40,31 @@ import com.meterware.httpunit.WebResponse;
 
 /**
  * Test the {@link PicketLinkAuthenticator}
+ * 
  * @author Anil.Saldhana@redhat.com
  * @since Sep 13, 2011
  */
-@RunWith (Arquillian.class)
-public class PicketLinkAuthenticatorTestCase
-{
-   @Test
-   public void testDistinctUsers() throws Exception
-   {
-      WebRequest serviceRequest1 = new GetMethodWebRequest( "http://" + System.getProperty("test.hosts.bind.address", "localhost") + ":" + System.getProperty("test.server.port", "28080")
-            + "/authenticator/?user=UserA" );
-      WebConversation webConversation = new WebConversation();
-      WebResponse webResponse = webConversation.getResponse( serviceRequest1 ); 
-      String responseText = webResponse.getText();
-      assertTrue(responseText.contains("UserA"));
-     
-      WebRequest serviceRequest2 = new GetMethodWebRequest( "http://" + System.getProperty("test.hosts.bind.address", "localhost") + ":" + System.getProperty("test.server.port", "28080")
-            + "/authenticator/?user=UserB" );
-      WebConversation webConversation2 = new WebConversation();
-      WebResponse webResponse2 = webConversation2.getResponse( serviceRequest2 ); 
-      String responseText2 = webResponse2.getText();
-      assertTrue(responseText2.contains("UserB")); 
-   }
+@RunWith(Arquillian.class)
+public class PicketLinkAuthenticatorTestCase {
+    
+    @Deployment(name = "authenticator", testable = false)
+    @TargetsContainer("jboss")
+    public static WebArchive createAuthenticatorDeployment() {
+        return MavenArtifactUtil.getIntegrationMavenArchive("authenticator");
+    }
+
+    @Test
+    public void testDistinctUsers() throws Exception {
+        WebRequest serviceRequest1 = new GetMethodWebRequest(TestUtil.getTargetURL("/authenticator/?user=UserA"));
+        WebConversation webConversation = new WebConversation();
+        WebResponse webResponse = webConversation.getResponse(serviceRequest1);
+        String responseText = webResponse.getText();
+        assertTrue(responseText.contains("UserA"));
+
+        WebRequest serviceRequest2 = new GetMethodWebRequest(TestUtil.getTargetURL("/authenticator/?user=UserB"));
+        WebConversation webConversation2 = new WebConversation();
+        WebResponse webResponse2 = webConversation2.getResponse(serviceRequest2);
+        String responseText2 = webResponse2.getText();
+        assertTrue(responseText2.contains("UserB"));
+    }
 }

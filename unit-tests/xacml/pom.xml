@@ -19,4 +19,15 @@
 			</plugin>
 		</plugins>
 	</build>
+	<dependencies>
+		<dependency>
+			<groupId>org.picketlink</groupId>
+			<artifactId>
+				picketlink-integration-util-unit-tests
+			</artifactId>
+			<version>${project.version}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 </project>

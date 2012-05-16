@@ -22,9 +22,19 @@
 package org.picketlink.test.integration.saml11;
 
 import static org.junit.Assert.assertTrue;
+import static org.picketlink.test.integration.util.PicketLinkConfigurationUtil.addTrustedDomain;
+import static org.picketlink.test.integration.util.TestUtil.getServerAddress;
+import static org.picketlink.test.integration.util.TestUtil.getTargetURL;
 
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.api.TargetsContainer;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
+import org.picketlink.identity.federation.core.exceptions.ConfigurationException;
+import org.picketlink.identity.federation.core.exceptions.ParsingException;
+import org.picketlink.identity.federation.core.exceptions.ProcessingException;
 import org.picketlink.test.integration.saml2.AbstractSAMLIntegrationTests;
+import org.picketlink.test.integration.util.MavenArtifactUtil;
 
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.SubmitButton;
@@ -77,5 +87,22 @@ public class SAML11IDPFirstUnitTestCase extends AbstractSAMLIntegrationTests {
             }
         }
         assertTrue("We found the SP link?", foundLink);
+    }
+    
+    @Deployment(name = "idp", testable = false)
+    @TargetsContainer("jboss")
+    public static WebArchive createIDPDeployment() throws ConfigurationException, ProcessingException, ParsingException,
+            InterruptedException {
+        WebArchive idp = MavenArtifactUtil.getQuickstartsMavenArchive("idp");
+        
+        addTrustedDomain(idp, getServerAddress());
+        
+        return idp;
+    }
+    
+    @Deployment(name = "sales-saml11", testable = false)
+    @TargetsContainer("jboss")
+    public static WebArchive createSalesSAML11Deployment() {
+        return MavenArtifactUtil.getQuickstartsMavenArchive("sales-saml11");
     }
 }

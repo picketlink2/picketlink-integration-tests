@@ -75,6 +75,7 @@ import org.picketlink.identity.xmlsec.w3.xmldsig.KeyValueType;
 import org.picketlink.identity.xmlsec.w3.xmldsig.RSAKeyValueType;
 import org.picketlink.identity.xmlsec.w3.xmldsig.X509CertificateType;
 import org.picketlink.identity.xmlsec.w3.xmldsig.X509DataType;
+import org.picketlink.test.integration.util.TestUtil;
 import org.w3c.dom.Element;
 
 /**
@@ -87,7 +88,7 @@ import org.w3c.dom.Element;
  * @since Jun 8, 2010
  */
 @RunWith(Arquillian.class)
-public class PicketLinkSTSIntegrationUnitTestCase {
+public class PicketLinkSTSIntegrationUnitTestCase extends AbstractWSTrustIntegrationTests {
     private static WSTrustClient client;
 
     private static Certificate certificate;
@@ -95,7 +96,7 @@ public class PicketLinkSTSIntegrationUnitTestCase {
     @BeforeClass
     public static void initClient() throws Exception {
         // create the WSTrustClient instance.
-        client = new WSTrustClient("PicketLinkSTS", "PicketLinkSTSPort", "http://" + System.getProperty("test.hosts.bind.address", "localhost") + ":" + System.getProperty("test.server.port", "28080") + "/picketlink-sts/PicketLinkSTS",
+        client = new WSTrustClient("PicketLinkSTS", "PicketLinkSTSPort", TestUtil.getTargetURL("/picketlink-sts/PicketLinkSTS"),
                 new SecurityInfo("tomcat", "tomcat"));
 
         // get the certificate used in the public key scenarios.

@@ -13,18 +13,19 @@
 		<module>parent</module>
 		
 		<!-- Unit test modules -->
+		<module>unit-tests/util</module>
 		<module>unit-tests/saml</module>
-<!-- 		<module>unit-tests/ws-trust</module> -->
-<!-- 		<module>unit-tests/xacml</module> -->
-<!-- 		<module>unit-tests/trust</module> -->
+		<module>unit-tests/ws-trust</module>
+		<module>unit-tests/xacml</module>
+		<module>unit-tests/trust</module>
 		
 		<!-- Integration test modules -->
 		<module>integration-tests</module>
 		<module>integration-tests/integration-webapps/claims</module>
 		<module>integration-tests/integration-webapps/authenticator</module>
 <!-- 		<module>integration-tests/jboss-as7</module> -->
-<!-- 		<module>integration-tests/jboss-as5</module> -->
+		<module>integration-tests/jboss-as5</module>
 <!-- 		<module>integration-tests/jboss-as6</module> -->
-		<module>integration-tests/tomcat-6</module>
+<!-- 		<module>integration-tests/tomcat-6</module> -->
 	</modules>
 </project>

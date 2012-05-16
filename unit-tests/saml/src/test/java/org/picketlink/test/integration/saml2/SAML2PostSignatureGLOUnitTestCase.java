@@ -21,20 +21,119 @@
  */
 package org.picketlink.test.integration.saml2;
 
+import static org.junit.Assert.assertTrue;
+import static org.picketlink.test.integration.util.PicketLinkConfigurationUtil.addKeyStoreAlias;
+import static org.picketlink.test.integration.util.PicketLinkConfigurationUtil.addTrustedDomain;
+import static org.picketlink.test.integration.util.PicketLinkConfigurationUtil.addValidatingAlias;
+import static org.picketlink.test.integration.util.TestUtil.getServerAddress;
+import static org.picketlink.test.integration.util.TestUtil.getTargetURL;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.api.TargetsContainer;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Test;
+import org.picketlink.test.integration.util.MavenArtifactUtil;
+
+import com.meterware.httpunit.GetMethodWebRequest;
+import com.meterware.httpunit.SubmitButton;
+import com.meterware.httpunit.WebConversation;
+import com.meterware.httpunit.WebForm;
+import com.meterware.httpunit.WebRequest;
+import com.meterware.httpunit.WebResponse;
+
 /**
  * Unit test the GLO scenarios involving two endpoints with SAML2 Post and Signature binding
  * 
  * @author anil saldhana
  */
-public class SAML2PostSignatureGLOUnitTestCase extends SAML2PostBindingGlobalLogOutUnitTestCase {
+public class SAML2PostSignatureGLOUnitTestCase extends AbstractSAMLIntegrationTests {
     
-    @Override
+    @Test
+    public void testSAMLPostBindingGlobalLogOut() throws Exception {
+        System.out.println("Trying " + getSalesURL());
+        // Sales post Application Login
+        WebRequest serviceRequest1 = new GetMethodWebRequest(getSalesURL());
+        WebConversation webConversation = new WebConversation();
+
+        WebResponse webResponse = webConversation.getResponse(serviceRequest1);
+        WebForm loginForm = webResponse.getForms()[0];
+        loginForm.setParameter("j_username", "tomcat");
+        loginForm.setParameter("j_password", "tomcat");
+        SubmitButton submitButton = loginForm.getSubmitButtons()[0];
+        submitButton.click();
+
+        webResponse = webConversation.getCurrentPage();
+        assertTrue(" Reached the sales index page ", webResponse.getText().contains("SalesTool"));
+
+        // Employee post Application Login
+        System.out.println("Trying " + getEmployeeURL());
+        webResponse = webConversation.getResponse(getEmployeeURL());
+        assertTrue(" Reached the employee index page ", webResponse.getText().contains("EmployeeDashboard"));
+
+        // Logout from sales
+        System.out.println("Trying " + getSalesURL() + LOGOUT_URL);
+        webResponse = webConversation.getResponse(getSalesURL() + LOGOUT_URL);
+        assertTrue("Reached logged out page", webResponse.getText().contains("Logout"));
+
+        // Hit the Sales Apps again
+        System.out.println("Trying " + getSalesURL());
+        webResponse = webConversation.getResponse(getSalesURL());
+        assertTrue(" Reached the Login page ", webResponse.getText().contains("Login"));
+
+        // Hit the Employee Apps again
+        System.out.println("Trying " + getEmployeeURL());
+        webResponse = webConversation.getResponse(getEmployeeURL());
+        assertTrue(" Reached the Login page ", webResponse.getText().contains("Login"));
+
+        webConversation.clearContents();
+    }
+
     protected String getEmployeeURL() {
         return getTargetURL("/employee-sig/");
     }
     
-    @Override
     protected String getSalesURL() {
         return getTargetURL("/sales-post-sig/");
+    }
+    
+    @Deployment(name = "idp-sig", testable = false)
+    @TargetsContainer("jboss")
+    public static WebArchive createIDPSigDeployment() throws GeneralSecurityException, IOException {
+        WebArchive idp = MavenArtifactUtil.getQuickstartsMavenArchive("idp-sig");
+        
+        addTrustedDomain(idp, getServerAddress());
+        addValidatingAlias(idp, getServerAddress(), getServerAddress());
+        addKeyStoreAlias(idp, getServerAddress());
+        
+        return idp;
+    }
+    
+    @Deployment(name = "sales-post-sig", testable = false)
+    @TargetsContainer("jboss")
+    public static WebArchive createSalesPostSigDeployment() throws GeneralSecurityException, IOException {
+        WebArchive sp = MavenArtifactUtil.getQuickstartsMavenArchive("sales-post-sig");
+        
+        addValidatingAlias(sp, getServerAddress(), getServerAddress());
+        addKeyStoreAlias(sp, getServerAddress());
+        
+        return sp;
+    }
+    
+    @Deployment(name = "employee-sig", testable = false)
+    @TargetsContainer("jboss")
+    public static WebArchive createEmployeeSigDeployment() throws KeyStoreException, FileNotFoundException, NoSuchAlgorithmException, CertificateException, GeneralSecurityException, IOException {
+        WebArchive sp = MavenArtifactUtil.getQuickstartsMavenArchive("employee-sig");
+        
+        addValidatingAlias(sp, getServerAddress(), getServerAddress());
+        addKeyStoreAlias(sp, getServerAddress());
+        
+        return sp;
     }
 }

@@ -22,8 +22,13 @@
 package org.picketlink.test.integration.saml2;
 
 import static org.junit.Assert.assertEquals;
+import static org.picketlink.test.integration.util.TestUtil.getTargetURL;
 
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.api.TargetsContainer;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
+import org.picketlink.test.integration.util.MavenArtifactUtil;
 
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.WebConversation;
@@ -37,6 +42,7 @@ import com.meterware.httpunit.WebResponse;
  * @since Jul 26, 2011
  */
 public class SAML2ResponseParsingUnitTestCase extends AbstractSAMLIntegrationTests {
+    
     /**
      * PLFED-214: Uses the claims.war in the picketlink-int-webapps setup
      */
@@ -50,4 +56,11 @@ public class SAML2ResponseParsingUnitTestCase extends AbstractSAMLIntegrationTes
 
         webConversation.clearContents();
     }
+    
+    @Deployment(name = "claims", testable = false)
+    @TargetsContainer("jboss")
+    public static WebArchive createClaimsDeployment() {
+        return MavenArtifactUtil.getIntegrationMavenArchive("claims");
+    }
+
 }

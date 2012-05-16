@@ -42,7 +42,7 @@ import org.jboss.ejb3.annotation.SecurityDomain;
 @WebService
 @SecurityDomain("sts")
 @RolesAllowed("testRole")
-@HandlerChain(file="handlers.xml")
+@HandlerChain(file="/handlers.xml")
 public class WSTestBean implements WSTest
 { 
    @Resource

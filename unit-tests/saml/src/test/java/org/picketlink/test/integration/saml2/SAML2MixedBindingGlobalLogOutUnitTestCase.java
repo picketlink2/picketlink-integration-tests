@@ -22,9 +22,18 @@
 package org.picketlink.test.integration.saml2;
 
 import static org.junit.Assert.assertTrue;
+import static org.picketlink.test.integration.util.PicketLinkConfigurationUtil.addTrustedDomain;
+import static org.picketlink.test.integration.util.TestUtil.getServerAddress;
 
+import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.OperateOnDeployment;
+import org.jboss.arquillian.container.test.api.TargetsContainer;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
+import org.picketlink.identity.federation.core.exceptions.ConfigurationException;
+import org.picketlink.identity.federation.core.exceptions.ParsingException;
+import org.picketlink.identity.federation.core.exceptions.ProcessingException;
+import org.picketlink.test.integration.util.MavenArtifactUtil;
 
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.SubmitButton;
@@ -106,5 +115,40 @@ public class SAML2MixedBindingGlobalLogOutUnitTestCase extends AbstractSAMLInteg
         assertTrue(" Reached the Login page ", webResponse.getText().contains("Login"));
 
         webConversation.clearContents();
+    }
+
+    @Deployment(name = "idp", testable = false)
+    @TargetsContainer("jboss")
+    public static WebArchive createIDPDeployment() throws ConfigurationException, ProcessingException, ParsingException,
+            InterruptedException {
+        WebArchive idp = MavenArtifactUtil.getQuickstartsMavenArchive("idp");
+        
+        addTrustedDomain(idp, getServerAddress());
+        
+        return idp;
+    }
+    
+    @Deployment(name = "sales-post", testable = false)
+    @TargetsContainer("jboss")
+    public static WebArchive createSalesPostDeployment() {
+        return MavenArtifactUtil.getQuickstartsMavenArchive("sales-post");
+    }
+
+    @Deployment(name = "sales-post-valve", testable = false)
+    @TargetsContainer("jboss")
+    public static WebArchive createSalesPostValveDeployment() {
+        return MavenArtifactUtil.getQuickstartsMavenArchive("sales-post-valve");
+    }
+
+    @Deployment(name = "employee", testable = false)
+    @TargetsContainer("jboss")
+    public static WebArchive createEmployeeDeployment() {
+        return MavenArtifactUtil.getQuickstartsMavenArchive("employee");
+    }
+
+    @Deployment(name = "employee-redirect-valve", testable = false)
+    @TargetsContainer("jboss")
+    public static WebArchive createEmployeeRedirectValvePostDeployment() {
+        return MavenArtifactUtil.getQuickstartsMavenArchive("employee-redirect-valve");
     }
 }

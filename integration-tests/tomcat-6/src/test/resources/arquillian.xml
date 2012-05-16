@@ -3,11 +3,11 @@
 		<configuration>
 			<property name="unpackArchive">true</property>
 			<property name="catalinaHome">${jboss.as.home}</property>
-			<property name="bindAddress">localhost</property>
-			<property name="bindHttpPort">28080</property>
+			<property name="bindAddress">${test.container.bind.address}</property>
+			<property name="bindHttpPort">${test.container.bind.http.port}</property>
 			<property name="user">tomcat</property>
 			<property name="pass">tomcat</property>
-			<property name="javaVmArguments">-Didp.url=http://localhost:28080/idp/ -Didp-sig.url=http://localhost:28080/idp-sig/ -Dsales-post.url=http://localhost:28080/sales-post/ -Dsales-saml11.url=http://localhost:28080/sales-saml11 -Dsales-post-valve.url=http://localhost:28080/sales-post-valve/ -Dsales-post-sig.url=http://localhost:28080/sales-post-sig/ -Demployee.url=http://localhost:28080/employee/ -Demployee-redirect-valve.url=http://localhost:28080/employee-redirect-valve/ -Demployee-sig.url=http://localhost:28080/employee-sig/</property>
+			<property name="javaVmArguments">-Didp.url=http://${test.container.bind.address}:${test.container.bind.http.port}/idp/ -Didp-sig.url=http://${test.container.bind.address}:${test.container.bind.http.port}/idp-sig/ -Dsales-post.url=http://${test.container.bind.address}:${test.container.bind.http.port}/sales-post/ -Dsales-saml11.url=http://${test.container.bind.address}:${test.container.bind.http.port}/sales-saml11 -Dsales-post-valve.url=http://${test.container.bind.address}:${test.container.bind.http.port}/sales-post-valve/ -Dsales-post-sig.url=http://${test.container.bind.address}:${test.container.bind.http.port}/sales-post-sig/ -Demployee.url=http://${test.container.bind.address}:${test.container.bind.http.port}/employee/ -Demployee-redirect-valve.url=http://${test.container.bind.address}:${test.container.bind.http.port}/employee-redirect-valve/ -Demployee-sig.url=http://${test.container.bind.address}:${test.container.bind.http.port}/employee-sig/</property>
 		</configuration>
 	</container>
 </arquillian>

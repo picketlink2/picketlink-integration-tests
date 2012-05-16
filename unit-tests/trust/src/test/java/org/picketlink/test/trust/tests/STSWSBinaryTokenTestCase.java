@@ -24,6 +24,7 @@ package org.picketlink.test.trust.tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.net.URL;
 import java.util.List;
 
@@ -34,9 +35,18 @@ import javax.xml.ws.WebServiceException;
 import javax.xml.ws.handler.Handler;
 import javax.xml.ws.handler.MessageContext;
 
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.api.TargetsContainer;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.picketlink.identity.federation.core.exceptions.ConfigurationException;
+import org.picketlink.identity.federation.core.exceptions.ParsingException;
+import org.picketlink.identity.federation.core.exceptions.ProcessingException;
+import org.picketlink.test.integration.util.TestUtil;
 import org.picketlink.test.trust.ws.TestBean;
 import org.picketlink.test.trust.ws.WSTest;
 import org.picketlink.test.trust.ws.handlers.TestBinaryHandler;
@@ -45,88 +55,85 @@ import org.picketlink.trust.jbossws.handler.BinaryTokenHandler;
 
 /**
  * Unit Test the {@link BinaryTokenHandler}
+ * 
  * @author Anil.Saldhana@redhat.com
  * @since Apr 5, 2011
  */
-@RunWith (Arquillian.class)
-public class STSWSBinaryTokenTestCase
-{   
-   /**
-    * This test case does the following.
-    * - We set a Test HttpServletRequest on the soap message context.
-    * - We then inject the {@link BinaryTokenHandler} as a client side handler.
-    * - On the Server Side, we are hitting the {@link TestBean} which is guarded by the {@link TestBinaryHandler}
-    * 
-    * The WS has no security. The Server side {@link TestBinaryHandler} ensures that the call comes in with a 
-    * BinarySecurityToken
-    * 
-    * @throws Exception
-    */
-   @SuppressWarnings("rawtypes")
-   @Test
-   public void testWSInteraction() throws Exception 
-   { 
-      System.setProperty("binary.http.header", "TEST_HEADER");
-      
-      URL wsdl = new URL("http://" + System.getProperty("test.hosts.bind.address", "localhost") + ":" + System.getProperty("test.server.port", "28080")
-            + "/picketlink-wstest-tests/TestBean?wsdl");
-      QName serviceName = new QName("http://ws.trust.test.picketlink.org/", "TestBeanService");
-      Service service = Service.create(wsdl, serviceName);
-      WSTest port = service.getPort(new QName("http://ws.trust.test.picketlink.org/", "TestBeanPort"), WSTest.class);
-
-      TestServletRequest request = new TestServletRequest();
-      request.addHeader("TEST_HEADER", "ABCDEFGH");
-
-      BindingProvider bp = (BindingProvider)port;
-      bp.getRequestContext().put(MessageContext.SERVLET_REQUEST, request);
-      List<Handler> handlers = bp.getBinding().getHandlerChain();
-
-      BinaryTokenHandler binaryTokenHandler = new BinaryTokenHandler();
+@RunWith(Arquillian.class)
+public class STSWSBinaryTokenTestCase {
   
-      handlers.add(binaryTokenHandler);
-      bp.getBinding().setHandlerChain(handlers); 
+    @Deployment(name = "picketlink-wstest-tests", testable = false)
+    @TargetsContainer("jboss")
+    public static JavaArchive createWSTestDeployment() throws ConfigurationException, ProcessingException, ParsingException,
+            InterruptedException {
+        return ShrinkWrap.createFromZipFile(JavaArchive.class, new File("../../unit-tests/trust/target/picketlink-wstest-tests.jar"));
+    }
+    
+    /**
+     * This test case does the following. - We set a Test HttpServletRequest on the soap message context. - We then inject the
+     * {@link BinaryTokenHandler} as a client side handler. - On the Server Side, we are hitting the {@link TestBean} which is
+     * guarded by the {@link TestBinaryHandler}
+     * 
+     * The WS has no security. The Server side {@link TestBinaryHandler} ensures that the call comes in with a
+     * BinarySecurityToken
+     * 
+     * @throws Exception
+     */
+    @SuppressWarnings("rawtypes")
+    @Test
+    public void testWSInteraction() throws Exception {
+        System.setProperty("binary.http.header", "TEST_HEADER");
 
-      assertEquals("Test", port.echo("Test"));
-   }
-   
-   /**
-    * This test case does the following.
-    * - We set a Test HttpServletRequest on the soap message context.
-    * - We then inject the {@link BinaryTokenHandler} as a client side handler.
-    * - On the Server Side, we are hitting the {@link TestBean} which is guarded by the {@link TestBinaryHandler}
-    * 
-    * The WS has no security. The Server side {@link TestBinaryHandler} ensures that the call comes in with a 
-    * BinarySecurityToken
-    * 
-    * @throws Exception
-    */ 
-   @Test
-   public void testWSLackOfBinaryHandlerInteraction() throws Exception 
-   { 
-      System.setProperty("binary.http.header", "TEST_HEADER");
-      
-      URL wsdl = new URL("http://" + System.getProperty("test.hosts.bind.address", "localhost") + ":" + System.getProperty("test.server.port", "28080")
-            + "/picketlink-wstest-tests/TestBean?wsdl");
-      QName serviceName = new QName("http://ws.trust.test.picketlink.org/", "TestBeanService");
-      Service service = Service.create(wsdl, serviceName);
-      WSTest port = service.getPort(new QName("http://ws.trust.test.picketlink.org/", "TestBeanPort"), WSTest.class);
+        URL wsdl = new URL(TestUtil.getTargetURL("/picketlink-wstest-tests/TestBean?wsdl"));
+        QName serviceName = new QName("http://ws.trust.test.picketlink.org/", "TestBeanService");
+        Service service = Service.create(wsdl, serviceName);
+        WSTest port = service.getPort(new QName("http://ws.trust.test.picketlink.org/", "TestBeanPort"), WSTest.class);
 
-      TestServletRequest request = new TestServletRequest();
-      request.addHeader("TEST_HEADER", "ABCDEFGH");
- 
-      try
-      {
-         port.echo("Test");
-         fail("Should have thrown exception as we do not have binary handler injected");
-      }
-      catch( Exception e)
-      { 
-         if( e instanceof WebServiceException)
-         {
-            //pass
-         }
-         else
-            fail("wrong exception:"+e);
-      }
-   }
+        TestServletRequest request = new TestServletRequest();
+        request.addHeader("TEST_HEADER", "ABCDEFGH");
+
+        BindingProvider bp = (BindingProvider) port;
+        bp.getRequestContext().put(MessageContext.SERVLET_REQUEST, request);
+        List<Handler> handlers = bp.getBinding().getHandlerChain();
+
+        BinaryTokenHandler binaryTokenHandler = new BinaryTokenHandler();
+
+        handlers.add(binaryTokenHandler);
+        bp.getBinding().setHandlerChain(handlers);
+
+        assertEquals("Test", port.echo("Test"));
+    }
+
+    /**
+     * This test case does the following. - We set a Test HttpServletRequest on the soap message context. - We then inject the
+     * {@link BinaryTokenHandler} as a client side handler. - On the Server Side, we are hitting the {@link TestBean} which is
+     * guarded by the {@link TestBinaryHandler}
+     * 
+     * The WS has no security. The Server side {@link TestBinaryHandler} ensures that the call comes in with a
+     * BinarySecurityToken
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testWSLackOfBinaryHandlerInteraction() throws Exception {
+        System.setProperty("binary.http.header", "TEST_HEADER");
+
+        URL wsdl = new URL(TestUtil.getTargetURL("/picketlink-wstest-tests/TestBean?wsdl"));
+        QName serviceName = new QName("http://ws.trust.test.picketlink.org/", "TestBeanService");
+        Service service = Service.create(wsdl, serviceName);
+        WSTest port = service.getPort(new QName("http://ws.trust.test.picketlink.org/", "TestBeanPort"), WSTest.class);
+
+        TestServletRequest request = new TestServletRequest();
+        request.addHeader("TEST_HEADER", "ABCDEFGH");
+
+        try {
+            port.echo("Test");
+            fail("Should have thrown exception as we do not have binary handler injected");
+        } catch (Exception e) {
+            if (e instanceof WebServiceException) {
+                // pass
+            } else
+                fail("wrong exception:" + e);
+        }
+    }
 }

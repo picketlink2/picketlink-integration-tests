@@ -23,6 +23,7 @@ package org.picketlink.test.trust.tests;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.net.URL;
 import java.util.List;
 
@@ -31,9 +32,17 @@ import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Service;
 import javax.xml.ws.handler.Handler;
 
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.api.TargetsContainer;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.picketlink.identity.federation.core.exceptions.ConfigurationException;
+import org.picketlink.identity.federation.core.exceptions.ParsingException;
+import org.picketlink.identity.federation.core.exceptions.ProcessingException;
+import org.picketlink.test.integration.util.TestUtil;
 import org.picketlink.test.trust.ws.WSTest;
 import org.picketlink.trust.jbossws.SAML2Constants;
 import org.picketlink.trust.jbossws.handler.SAML2Handler;
@@ -41,35 +50,42 @@ import org.w3c.dom.Element;
 
 /**
  * A Simple WS Test for the SAML Profile of WSS
+ * 
  * @author Marcus Moyses
  * @author Anil Saldhana
  * @since Oct 3, 2010
  */
-@RunWith (Arquillian.class)
-public class STSWSClientTestCase extends TrustTestsBase
-{
-   private static String username = "UserA";
-   private static String password = "PassA";
+@RunWith(Arquillian.class)
+public class STSWSClientTestCase extends TrustTestsBase {
+    
+    private static String username = "UserA";
+    private static String password = "PassA";
 
-   @SuppressWarnings("rawtypes")
-   @Test
-   public void testWSInteraction() throws Exception 
-   {  
-      Element assertion = getAssertionFromSTS(username, password);
+    @Deployment(name = "picketlink-wstest-tests", testable = false)
+    @TargetsContainer("jboss")
+    public static JavaArchive createWSTestDeployment() throws ConfigurationException, ProcessingException, ParsingException,
+            InterruptedException {
+        return ShrinkWrap.createFromZipFile(JavaArchive.class, new File(
+                "../../unit-tests/trust/target/picketlink-wstest-tests.jar"));
+    }
 
-      // Step 2: Stuff the Assertion on the SOAP message context and add the SAML2Handler to client side handlers
-      URL wsdl = new URL("http://" + System.getProperty("test.hosts.bind.address", "localhost") + ":" + System.getProperty("test.server.port", "28080")
-            + "/picketlink-wstest-tests/WSTestBean?wsdl");
-      QName serviceName = new QName("http://ws.trust.test.picketlink.org/", "WSTestBeanService");
-      Service service = Service.create(wsdl, serviceName);
-      WSTest port = service.getPort(new QName("http://ws.trust.test.picketlink.org/", "WSTestBeanPort"), WSTest.class);
-      BindingProvider bp = (BindingProvider)port;
-      bp.getRequestContext().put(SAML2Constants.SAML2_ASSERTION_PROPERTY, assertion);
-      List<Handler> handlers = bp.getBinding().getHandlerChain();
-      handlers.add(new SAML2Handler());
-      bp.getBinding().setHandlerChain(handlers); 
+    @SuppressWarnings("rawtypes")
+    @Test
+    public void testWSInteraction() throws Exception {
+        Element assertion = getAssertionFromSTS(username, password);
 
-      //Step 3: Access the WS. Exceptions will be thrown anyway.
-      assertEquals("Test",port.echo("Test"));
-   }
+        // Step 2: Stuff the Assertion on the SOAP message context and add the SAML2Handler to client side handlers
+        URL wsdl = new URL(TestUtil.getTargetURL("/picketlink-wstest-tests/WSTestBean?wsdl"));
+        QName serviceName = new QName("http://ws.trust.test.picketlink.org/", "WSTestBeanService");
+        Service service = Service.create(wsdl, serviceName);
+        WSTest port = service.getPort(new QName("http://ws.trust.test.picketlink.org/", "WSTestBeanPort"), WSTest.class);
+        BindingProvider bp = (BindingProvider) port;
+        bp.getRequestContext().put(SAML2Constants.SAML2_ASSERTION_PROPERTY, assertion);
+        List<Handler> handlers = bp.getBinding().getHandlerChain();
+        handlers.add(new SAML2Handler());
+        bp.getBinding().setHandlerChain(handlers);
+
+        // Step 3: Access the WS. Exceptions will be thrown anyway.
+        assertEquals("Test", port.echo("Test"));
+    }
 }

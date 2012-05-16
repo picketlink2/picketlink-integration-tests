@@ -38,7 +38,7 @@ import org.junit.runner.RunWith;
  */
 @Stateless
 @WebService
-@HandlerChain(file="test-binary-handlers.xml")
+@HandlerChain(file="/test-binary-handlers.xml")
 public class TestBean implements WSTest
 { 
    @Resource

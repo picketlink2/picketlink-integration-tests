@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="build-jbas5">
-	
+
 	<property name="JBAS5_PROFILE_DIR" location="${jboss.as.home}/server/default" />
 	<property name="JBAS_CONFIG_ROOT" location="${JBAS5_PROFILE_DIR}" />
 	<property name="JBAS5_DEPLOY" location="${JBAS5_PROFILE_DIR}/deploy" />
@@ -17,9 +17,7 @@
 
 	<target name="copy-trust-settings-jbas5">
 		<copy file="${basedir}/../../unit-tests/trust/src/test/resources/domains/sts-jboss-beans.xml" todir="${JBAS5_DEPLOY}/picketlink" />
-		<copy file="${basedir}/../../unit-tests/trust/target/picketlink-wstest-tests.jar" todir="${JBAS5_DEPLOY}/picketlink" />
 		<copy file="${basedir}/../../unit-tests/trust/target/pojo-test.war" todir="${JBAS5_DEPLOY}/picketlink" />
-		<copy file="${basedir}/../../unit-tests/trust/target/binary-test.war" todir="${JBAS5_DEPLOY}/picketlink" />
 		<copy file="${basedir}/../../unit-tests/trust/src/test/resources/props/sts-users.properties" todir="${JBAS5_DEPLOY}/../conf" />
 		<copy file="${basedir}/../../unit-tests/trust/src/test/resources/props/sts-roles.properties" todir="${JBAS5_DEPLOY}/../conf" />
 	</target>
