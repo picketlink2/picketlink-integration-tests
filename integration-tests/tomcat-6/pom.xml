@@ -1,0 +1,82 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>picketlink-integration-container</artifactId>
+		<groupId>org.picketlink</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<artifactId>picketlink-integration-tomcat6</artifactId>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.jboss.arquillian.container</groupId>
+			<artifactId>arquillian-tomcat-managed-6</artifactId>
+			<version>1.0.0.CR3</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.6</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<properties>
+		<binding.server>tomcat-6</binding.server>
+		<picketlink.binding>tomcat5</picketlink.binding>
+		<jboss.as.home>${integration.tests.containers.dir}/apache-tomcat-${version.tomcat_6}</jboss.as.home>
+		<jboss.as.picketlink.lib.dir>${jboss.as.home}/lib</jboss.as.picketlink.lib.dir>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.1</version>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.picketbox</groupId>
+									<artifactId>picketbox</artifactId>
+									<version>4.0.7.Final</version>
+									<type>jar</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${jboss.as.picketlink.lib.dir}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>log4j</groupId>
+									<artifactId>log4j</artifactId>
+									<version>1.2.14</version>
+									<type>jar</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${jboss.as.picketlink.lib.dir}</outputDirectory>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.12</version>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

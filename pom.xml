@@ -1,0 +1,30 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>picketlink-integration-tests-parent-new</artifactId>
+		<groupId>org.picketlink</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>./parent</relativePath>
+	</parent>
+	<artifactId>picketlink-integration-tests-new</artifactId>
+	<packaging>pom</packaging>
+	<modules>
+		<module>parent</module>
+		
+		<!-- Unit test modules -->
+		<module>unit-tests/saml</module>
+<!-- 		<module>unit-tests/ws-trust</module> -->
+<!-- 		<module>unit-tests/xacml</module> -->
+<!-- 		<module>unit-tests/trust</module> -->
+		
+		<!-- Integration test modules -->
+		<module>integration-tests</module>
+		<module>integration-tests/integration-webapps/claims</module>
+		<module>integration-tests/integration-webapps/authenticator</module>
+		<module>integration-tests/jboss-as7</module>
+		<module>integration-tests/jboss-as5</module>
+		<module>integration-tests/jboss-as6</module>
+		<module>integration-tests/tomcat-6</module>
+	</modules>
+</project>

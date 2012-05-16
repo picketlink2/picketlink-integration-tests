@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="build-jbas6">
+
+	<property name="TOMCAT_DIR" location="${integration.tests.dir}/containers/apache-tomcat-6.0.26" />
+	<property name="JBAS_CONFIG_ROOT" location="${TOMCAT_DIR}" />
+	<property name="TOMCAT6_DEPLOY" location="${TOMCAT_DIR}/webapps" />
+
+	<target name="prepare-test-environment" depends="unzip-jboss">
+		<echo>Integration Test Environment for TOMCAT 6 PREPARED</echo>
+		<ant antfile="../ant-scripts/build.xml" inheritAll="true" />
+	</target>
+
+	<target name="unzip-jboss">
+		<echo>Unzip Apache Tomcat AS 6</echo>
+		<unzip src="${basedir}/dist/apache-tomcat-6.0.26.zip" dest="${integration.tests.dir}/containers" />
+	</target>
+
+</project>

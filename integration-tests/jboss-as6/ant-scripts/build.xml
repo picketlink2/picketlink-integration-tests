@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="build-jbas6">
+
+	<property name="JBAS6_PROFILE_DIR" location="${integration.tests.dir}/containers/jboss-6.0.0.Final/server/default" />
+	<property name="JBAS_CONFIG_ROOT" location="${JBAS6_PROFILE_DIR}" />
+	<property name="JBAS6_DEPLOY" location="${JBAS6_PROFILE_DIR}/deploy" />
+
+	<target name="prepare-test-environment" depends="unzip-jboss,slimming-jboss">
+		<echo>Integration Test Environment for JBAS6 PREPARED</echo>
+		<ant antfile="../ant-scripts/build.xml" inheritAll="true" />
+	</target>
+
+	<target name="unzip-jboss">
+		<echo>Unzip JBOSS AS 6.0.0.Final</echo>
+		<unzip src="${basedir}/dist/jboss-as-distribution-6.0.0.Final.zip" dest="${integration.tests.dir}/containers" />
+	</target>
+
+	<target name="slimming-jboss">
+		<echo>Removing the Messaging Subsystem</echo>
+		<delete dir="${JBAS6_DEPLOY}/messaging" />
+		<delete file="${JBAS6_DEPLOY}/jms-ra.rar" />
+		<delete file="${JBAS6_DEPLOY}/../deployers/messaging-definitions-jboss-beans.xml" />
+
+		<echo>Removing the Admin Console</echo>
+		<delete dir="${JBAS6_DEPLOY}/admin-console.war" />
+
+		<echo>Removing mod_cluster</echo>
+		<delete dir="${JBAS6_DEPLOY}/mod_cluster.sar" />
+	</target>
+
+</project>

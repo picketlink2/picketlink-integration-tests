@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="build-jbas5">
+	
+	<property name="JBAS5_PROFILE_DIR" location="${jboss.as.home}/server/default" />
+	<property name="JBAS_CONFIG_ROOT" location="${JBAS5_PROFILE_DIR}" />
+	<property name="JBAS5_DEPLOY" location="${JBAS5_PROFILE_DIR}/deploy" />
+
+	<target name="prepare-test-environment" depends="unzip-jboss,slimming-jboss,copy-trust-settings-jbas5">
+		<echo>Integration Test Environment for JBAS5 PREPARED</echo>
+		<ant antfile="../ant-scripts/build.xml" inheritAll="true" />
+	</target>
+
+	<target name="unzip-jboss">
+		<echo>Unzip JBOSS AS 5.1.0.GA</echo>
+		<unzip src="${basedir}/dist/jboss-5.1.0.GA-jdk6.zip" dest="${integration.tests.dir}/containers" />
+	</target>
+
+	<target name="copy-trust-settings-jbas5">
+		<copy file="${basedir}/../../unit-tests/trust/src/test/resources/domains/sts-jboss-beans.xml" todir="${JBAS5_DEPLOY}/picketlink" />
+		<copy file="${basedir}/../../unit-tests/trust/target/picketlink-wstest-tests.jar" todir="${JBAS5_DEPLOY}/picketlink" />
+		<copy file="${basedir}/../../unit-tests/trust/target/pojo-test.war" todir="${JBAS5_DEPLOY}/picketlink" />
+		<copy file="${basedir}/../../unit-tests/trust/target/binary-test.war" todir="${JBAS5_DEPLOY}/picketlink" />
+		<copy file="${basedir}/../../unit-tests/trust/src/test/resources/props/sts-users.properties" todir="${JBAS5_DEPLOY}/../conf" />
+		<copy file="${basedir}/../../unit-tests/trust/src/test/resources/props/sts-roles.properties" todir="${JBAS5_DEPLOY}/../conf" />
+	</target>
+
+	<target name="slimming-jboss">
+		<echo>Removing the Messaging Subsystem</echo>
+		<delete dir="${JBAS5_DEPLOY}/messaging" />
+		<delete file="${JBAS5_DEPLOY}/jms-ra.rar" />
+		<delete file="${JBAS5_DEPLOY}/../deployers/messaging-definitions-jboss-beans.xml" />
+
+		<echo>Removing the Admin Console</echo>
+		<delete dir="${JBAS5_DEPLOY}/admin-console.war" />
+
+	</target>
+
+</project>

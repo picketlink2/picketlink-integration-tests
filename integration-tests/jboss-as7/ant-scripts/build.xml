@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="build-jbas6">
+
+	<property name="JBAS7_PROFILE_DIR" location="${integration.tests.dir}/containers/jboss-as-7.1.1.Final/standalone/" />
+	<property name="JBAS_CONFIG_ROOT" location="${JBAS7_PROFILE_DIR}" />
+	<property name="JBAS7_DEPLOY" location="${JBAS7_PROFILE_DIR}/deployments" />
+
+	<target name="prepare-test-environment">
+		<echo>Integration Test Environment for JBAS7 PREPARED</echo>
+	</target>
+
+</project>
