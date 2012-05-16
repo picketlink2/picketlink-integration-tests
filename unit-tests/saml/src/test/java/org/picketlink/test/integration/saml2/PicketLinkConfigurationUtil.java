@@ -47,6 +47,8 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.picketlink.identity.federation.core.exceptions.ConfigurationException;
 import org.picketlink.identity.federation.core.exceptions.ParsingException;
 import org.picketlink.identity.federation.core.exceptions.ProcessingException;
+import org.picketlink.identity.federation.core.parsers.config.PicketLinkConfigParser;
+import org.picketlink.identity.federation.core.parsers.config.SAMLConfigParser;
 import org.picketlink.identity.federation.core.saml.v2.util.DocumentUtil;
 import org.picketlink.identity.federation.core.util.KeyStoreUtil;
 import org.w3c.dom.Document;
@@ -58,11 +60,19 @@ import org.w3c.dom.Element;
  */
 public class PicketLinkConfigurationUtil {
 
+    /**
+     * <p>
+     * Adds a new trusted domain to the <Trust><Domains> list.
+     * </p>
+     * 
+     * @param webArchive
+     * @param domain
+     */
     public static final void addTrustedDomain(WebArchive webArchive, String domain) {
         final Node picketlink = getPicketLinkConfigNode(webArchive);
         final Document document = getPicketLinkConfigDocument(picketlink);
 
-        Element element = DocumentUtil.getElement(document, new QName("Domains"));
+        Element element = DocumentUtil.getElement(document, new QName(SAMLConfigParser.DOMAINS));
 
         element.setTextContent(element.getTextContent() + "," + domain);
 
@@ -71,8 +81,21 @@ public class PicketLinkConfigurationUtil {
         overridePicketLinkConfig(webArchive, picketlink, document);
     }
 
-    public static void addKeyStoreAlias(WebArchive sp, String alias) throws GeneralSecurityException, IOException,
-            KeyStoreException, FileNotFoundException, NoSuchAlgorithmException, CertificateException {
+    /**
+     * <p>
+     * Adds a new alias to the keystore.
+     * </p>
+     * 
+     * @param sp
+     * @param alias
+     * @throws GeneralSecurityException
+     * @throws IOException
+     * @throws KeyStoreException
+     * @throws FileNotFoundException
+     * @throws NoSuchAlgorithmException
+     * @throws CertificateException
+     */
+    public static void addKeyStoreAlias(WebArchive sp, String alias) {
         Map<ArchivePath, Node> contentKeyStore = sp.getContent(new Filter<ArchivePath>() {
 
             public boolean include(ArchivePath object) {
@@ -83,34 +106,67 @@ public class PicketLinkConfigurationUtil {
         final Node keystore = contentKeyStore.values().iterator().next();
 
         char[] password = "store123".toCharArray();
+        
+        addValidatingAlias(sp, alias, alias);
+        
+        try {
+            final KeyStore jks = KeyStoreUtil.getKeyStore(keystore.getAsset().openStream(), password);
 
-        final KeyStore jks = KeyStoreUtil.getKeyStore(keystore.getAsset().openStream(), password);
+            Certificate certificate = jks.getCertificate("servercert");
 
-        Certificate certificate = jks.getCertificate("servercert");
+            jks.setCertificateEntry(alias, certificate);
 
-        jks.setCertificateEntry(alias, certificate);
+            File file = new File("/tmp/tmpjks.jks");
 
-        File file = new File("/tmp/tmpjks.jks");
+            if (file.exists()) {
+                file.delete();
+            }
 
-        if (file.exists()) {
-            file.delete();
+            FileOutputStream stream = new FileOutputStream(file);
+
+            jks.store(stream, password);
+
+            stream.close();
+
+            final FileInputStream fileInputStream = new FileInputStream("/tmp/tmpjks.jks");
+
+            sp.delete(keystore.getPath());
+
+            sp.add(new Asset() {
+                public InputStream openStream() {
+                    return fileInputStream;
+                }
+            }, keystore.getPath());
+        } catch (Exception e) {
+            throw new RuntimeException("Error while adding a new alias to the keystore.", e);
+        }
+    }
+
+    /**
+     * <p>
+     * Adds a new <KeyProvider><ValidatingAlias>.
+     * </p>
+     * 
+     * @param webArchive
+     * @param aliasKey
+     * @param aliasValue
+     */
+    private static void addValidatingAlias(WebArchive webArchive, String aliasKey, String aliasValue) {
+        final Node picketlink = getPicketLinkConfigNode(webArchive);
+        final Document document = getPicketLinkConfigDocument(picketlink);
+
+        Element element = DocumentUtil.getElement(document, new QName("KeyProvider"));
+
+        if (element != null) {
+            Element createElement = document.createElement("ValidatingAlias");
+
+            createElement.setAttribute("Key", aliasKey);
+            createElement.setAttribute("Value", aliasValue);
+
+            element.insertBefore(createElement, element.getLastChild());
         }
 
-        FileOutputStream stream = new FileOutputStream(file);
-
-        jks.store(stream, password);
-
-        stream.close();
-
-        final FileInputStream fileInputStream = new FileInputStream("/tmp/tmpjks.jks");
-
-        sp.delete(keystore.getPath());
-
-        sp.add(new Asset() {
-            public InputStream openStream() {
-                return fileInputStream;
-            }
-        }, keystore.getPath());
+        overridePicketLinkConfig(webArchive, picketlink, document);
     }
 
     private static Document getPicketLinkConfigDocument(final Node picketlink) {
@@ -134,25 +190,7 @@ public class PicketLinkConfigurationUtil {
 
         return content.values().iterator().next();
     }
-
-    public static void addValidatingAlias(WebArchive webArchive, String aliasKey, String aliasValue) {
-        final Node picketlink = getPicketLinkConfigNode(webArchive);
-        final Document document = getPicketLinkConfigDocument(picketlink);
-
-        Element element = DocumentUtil.getElement(document, new QName("KeyProvider"));
-
-        if (element != null) {
-            Element createElement = document.createElement("ValidatingAlias");
-
-            createElement.setAttribute("Key", aliasKey);
-            createElement.setAttribute("Value", aliasValue);
-
-            element.insertBefore(createElement, element.getLastChild());
-        }
-
-        overridePicketLinkConfig(webArchive, picketlink, document);
-    }
-
+    
     private static void overridePicketLinkConfig(WebArchive webArchive, final Node picketlink, final Document document) {
         webArchive.delete(picketlink.getPath());
         webArchive.add(new Asset() {
