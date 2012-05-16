@@ -86,8 +86,8 @@ public class SAML2MixedBindingGlobalLogOutUnitTestCase extends AbstractSAMLInteg
         assertTrue(" Reached the employee index page ", webResponse.getText().contains("SalesTool"));
 
         // Logout from sales
-        System.out.println("Trying " + SALES_POST_URL + LOGOUT_URL);
-        webResponse = webConversation.getResponse(SALES_POST_URL + LOGOUT_URL);
+        System.out.println("Trying " + EMPLOYEE_REDIRECT_URL + LOGOUT_URL);
+        webResponse = webConversation.getResponse(EMPLOYEE_REDIRECT_URL + LOGOUT_URL);
         assertTrue("Reached logged out page", webResponse.getText().contains("Logout"));
 
         // Hit the Sales Apps again
