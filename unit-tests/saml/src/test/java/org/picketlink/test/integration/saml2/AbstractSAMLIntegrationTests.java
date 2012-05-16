@@ -80,6 +80,7 @@ public class AbstractSAMLIntegrationTests {
     public static WebArchive createSalesPostSigDeployment() throws GeneralSecurityException, IOException {
         WebArchive sp = MavenArtifactUtil.getQuickstartsMavenArchive("sales-post-sig");
         
+        PicketLinkConfigurationUtil.addValidatingAlias(sp, getServerAddress(), getServerAddress());
         PicketLinkConfigurationUtil.addKeyStoreAlias(sp, getServerAddress());
         
         return sp;
@@ -102,6 +103,7 @@ public class AbstractSAMLIntegrationTests {
     public static WebArchive createEmployeeSigDeployment() throws KeyStoreException, FileNotFoundException, NoSuchAlgorithmException, CertificateException, GeneralSecurityException, IOException {
         WebArchive sp = MavenArtifactUtil.getQuickstartsMavenArchive("employee-sig");
         
+        PicketLinkConfigurationUtil.addValidatingAlias(sp, getServerAddress(), getServerAddress());
         PicketLinkConfigurationUtil.addKeyStoreAlias(sp, getServerAddress());
         
         return sp;

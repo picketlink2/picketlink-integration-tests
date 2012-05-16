@@ -147,13 +147,14 @@ public class PicketLinkConfigurationUtil {
             createElement.setAttribute("Key", aliasKey);
             createElement.setAttribute("Value", aliasValue);
 
-            element.appendChild(createElement);
+            element.insertBefore(createElement, element.getLastChild());
         }
 
         overridePicketLinkConfig(webArchive, picketlink, document);
     }
 
     private static void overridePicketLinkConfig(WebArchive webArchive, final Node picketlink, final Document document) {
+        webArchive.delete(picketlink.getPath());
         webArchive.add(new Asset() {
             public InputStream openStream() {
                 try {
