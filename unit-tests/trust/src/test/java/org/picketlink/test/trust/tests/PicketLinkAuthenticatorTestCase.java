@@ -27,7 +27,6 @@ import java.io.File;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.TargetsContainer;
-import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -38,6 +37,8 @@ import org.picketlink.identity.federation.core.exceptions.ConfigurationException
 import org.picketlink.identity.federation.core.exceptions.ParsingException;
 import org.picketlink.identity.federation.core.exceptions.ProcessingException;
 import org.picketlink.test.integration.util.MavenArtifactUtil;
+import org.picketlink.test.integration.util.PicketLinkIntegrationTests;
+import org.picketlink.test.integration.util.TargetContainers;
 import org.picketlink.test.integration.util.TestUtil;
 
 import com.meterware.httpunit.GetMethodWebRequest;
@@ -51,7 +52,8 @@ import com.meterware.httpunit.WebResponse;
  * @author Anil.Saldhana@redhat.com
  * @since Sep 13, 2011
  */
-@RunWith(Arquillian.class)
+@RunWith(PicketLinkIntegrationTests.class)
+@TargetContainers ({"jboss-as5"})
 public class PicketLinkAuthenticatorTestCase {
     
     @Deployment(name = "authenticator", testable = false)

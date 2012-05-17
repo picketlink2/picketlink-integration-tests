@@ -39,7 +39,6 @@ import javax.xml.ws.WebServiceException;
 
 import junit.framework.Assert;
 
-import org.jboss.arquillian.junit.Arquillian;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -75,6 +74,8 @@ import org.picketlink.identity.xmlsec.w3.xmldsig.KeyValueType;
 import org.picketlink.identity.xmlsec.w3.xmldsig.RSAKeyValueType;
 import org.picketlink.identity.xmlsec.w3.xmldsig.X509CertificateType;
 import org.picketlink.identity.xmlsec.w3.xmldsig.X509DataType;
+import org.picketlink.test.integration.util.PicketLinkIntegrationTests;
+import org.picketlink.test.integration.util.TargetContainers;
 import org.picketlink.test.integration.util.TestUtil;
 import org.w3c.dom.Element;
 
@@ -87,7 +88,8 @@ import org.w3c.dom.Element;
  * @author <a href="mailto:sguilhen@redhat.com">Stefan Guilhen</a>
  * @since Jun 8, 2010
  */
-@RunWith(Arquillian.class)
+@RunWith(PicketLinkIntegrationTests.class)
+@TargetContainers ({"jboss-as5", "jboss-as6", "jboss-as7"})
 public class PicketLinkSTSIntegrationUnitTestCase extends AbstractWSTrustIntegrationTests {
     private static WSTrustClient client;
 

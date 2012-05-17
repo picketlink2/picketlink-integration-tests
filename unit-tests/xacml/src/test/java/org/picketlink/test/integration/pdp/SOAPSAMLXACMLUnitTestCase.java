@@ -41,6 +41,7 @@ import org.jboss.security.xacml.factories.RequestAttributeFactory;
 import org.junit.Test;
 import org.picketlink.identity.federation.api.soap.SOAPSAMLXACML;
 import org.picketlink.identity.federation.api.soap.SOAPSAMLXACML.Result;
+import org.picketlink.test.integration.util.TargetContainers;
 import org.picketlink.test.integration.util.TestUtil;
 
 /**
@@ -49,6 +50,7 @@ import org.picketlink.test.integration.util.TestUtil;
  * @author Anil.Saldhana@redhat.com
  * @since Jul 31, 2009
  */
+@TargetContainers ({"jboss-as5", "jboss-as6", "jboss-as7"})
 public class SOAPSAMLXACMLUnitTestCase extends AbstractXACMLIntegrationTests {
     // Change it to true when you have an end point running locally
     private boolean sendRequest = true;

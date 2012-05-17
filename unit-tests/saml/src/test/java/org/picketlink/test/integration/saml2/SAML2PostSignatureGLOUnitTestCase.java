@@ -40,6 +40,7 @@ import org.jboss.arquillian.container.test.api.TargetsContainer;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.picketlink.test.integration.util.MavenArtifactUtil;
+import org.picketlink.test.integration.util.TargetContainers;
 
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.SubmitButton;
@@ -53,6 +54,7 @@ import com.meterware.httpunit.WebResponse;
  * 
  * @author anil saldhana
  */
+@TargetContainers ({"jboss-as5", "jboss-as6", "jboss-as7", "tomcat-6"})
 public class SAML2PostSignatureGLOUnitTestCase extends AbstractSAMLIntegrationTests {
     
     @Test

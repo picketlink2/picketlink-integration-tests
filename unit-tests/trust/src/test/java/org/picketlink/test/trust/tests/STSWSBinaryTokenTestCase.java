@@ -46,6 +46,8 @@ import org.junit.runner.RunWith;
 import org.picketlink.identity.federation.core.exceptions.ConfigurationException;
 import org.picketlink.identity.federation.core.exceptions.ParsingException;
 import org.picketlink.identity.federation.core.exceptions.ProcessingException;
+import org.picketlink.test.integration.util.PicketLinkIntegrationTests;
+import org.picketlink.test.integration.util.TargetContainers;
 import org.picketlink.test.integration.util.TestUtil;
 import org.picketlink.test.trust.ws.TestBean;
 import org.picketlink.test.trust.ws.WSTest;
@@ -59,7 +61,8 @@ import org.picketlink.trust.jbossws.handler.BinaryTokenHandler;
  * @author Anil.Saldhana@redhat.com
  * @since Apr 5, 2011
  */
-@RunWith(Arquillian.class)
+@RunWith(PicketLinkIntegrationTests.class)
+@TargetContainers ({"jboss-as5"})
 public class STSWSBinaryTokenTestCase {
   
     @Deployment(name = "picketlink-wstest-tests", testable = false)

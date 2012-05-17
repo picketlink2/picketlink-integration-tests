@@ -23,7 +23,6 @@ package org.picketlink.test.trust.tests;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.File;
 import java.net.URL;
 import java.util.List;
 
@@ -32,16 +31,10 @@ import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Service;
 import javax.xml.ws.handler.Handler;
 
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.container.test.api.TargetsContainer;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.picketlink.identity.federation.core.exceptions.ConfigurationException;
-import org.picketlink.identity.federation.core.exceptions.ParsingException;
-import org.picketlink.identity.federation.core.exceptions.ProcessingException;
+import org.picketlink.test.integration.util.PicketLinkIntegrationTests;
+import org.picketlink.test.integration.util.TargetContainers;
 import org.picketlink.test.integration.util.TestUtil;
 import org.picketlink.test.trust.ws.WSTest;
 import org.picketlink.trust.jbossws.SAML2Constants;
@@ -55,7 +48,8 @@ import org.w3c.dom.Element;
  * @author Anil Saldhana
  * @since Oct 3, 2010
  */
-@RunWith(Arquillian.class)
+@RunWith(PicketLinkIntegrationTests.class)
+@TargetContainers ({"jboss-as5"})
 public class STSWSClientTestCase extends TrustTestsBase {
     
     private static String username = "UserA";

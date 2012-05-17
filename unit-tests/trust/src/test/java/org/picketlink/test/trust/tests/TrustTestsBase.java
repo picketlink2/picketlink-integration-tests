@@ -31,7 +31,6 @@ import java.security.GeneralSecurityException;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.TargetsContainer;
-import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -44,6 +43,8 @@ import org.picketlink.identity.federation.core.exceptions.ProcessingException;
 import org.picketlink.identity.federation.core.wstrust.WSTrustException;
 import org.picketlink.identity.federation.core.wstrust.plugins.saml.SAMLUtil;
 import org.picketlink.test.integration.util.MavenArtifactUtil;
+import org.picketlink.test.integration.util.PicketLinkIntegrationTests;
+import org.picketlink.test.integration.util.TargetContainers;
 import org.picketlink.test.integration.util.TestUtil;
 import org.w3c.dom.Element;
 
@@ -53,7 +54,8 @@ import org.w3c.dom.Element;
  * @author Anil.Saldhana@redhat.com
  * @since Apr 18, 2011
  */
-@RunWith(Arquillian.class)
+@RunWith(PicketLinkIntegrationTests.class)
+@TargetContainers ({"jboss-as5"})
 public class TrustTestsBase {
     
     @Deployment(name = "picketlink-sts", testable = false)

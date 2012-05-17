@@ -34,6 +34,7 @@ import org.picketlink.identity.federation.core.exceptions.ConfigurationException
 import org.picketlink.identity.federation.core.exceptions.ParsingException;
 import org.picketlink.identity.federation.core.exceptions.ProcessingException;
 import org.picketlink.test.integration.util.MavenArtifactUtil;
+import org.picketlink.test.integration.util.TargetContainers;
 
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.SubmitButton;
@@ -54,6 +55,7 @@ import com.meterware.httpunit.WebResponse;
  * @author Anil.Saldhana@redhat.com
  * @since Apr 8, 2010
  */
+@TargetContainers ({"jboss-as5", "jboss-as6", "jboss-as7", "tomcat-6"})
 public class SAML2MixedBindingGlobalLogOutUnitTestCase extends AbstractSAMLIntegrationTests {
 
     @Test

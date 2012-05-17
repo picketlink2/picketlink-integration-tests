@@ -44,7 +44,7 @@ import org.picketlink.trust.jbossws.jaas.JBWSTokenIssuingLoginModule;
  * @author Anil.Saldhana@redhat.com
  * @since Apr 25, 2011
  */
-//@RunWith (Arquillian.class)
+//@RunWith (PicketLinkIntegrationTests.class)
 public class JBWSTokenIssuingLoginModuleUnitTestCase
 {
 //   @Test

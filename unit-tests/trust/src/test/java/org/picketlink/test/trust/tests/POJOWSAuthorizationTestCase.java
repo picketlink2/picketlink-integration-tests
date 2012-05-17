@@ -33,9 +33,10 @@ import javax.xml.ws.Service;
 import javax.xml.ws.handler.Handler;
 import javax.xml.ws.soap.SOAPFaultException;
 
-import org.jboss.arquillian.junit.Arquillian;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.picketlink.test.integration.util.PicketLinkIntegrationTests;
+import org.picketlink.test.integration.util.TargetContainers;
 import org.picketlink.test.trust.ws.WSTest;
 import org.picketlink.trust.jbossws.SAML2Constants;
 import org.picketlink.trust.jbossws.handler.SAML2Handler;
@@ -46,7 +47,8 @@ import org.w3c.dom.Element;
  * @author Anil Saldhana
  * @since Oct 3, 2010
  */
-@RunWith (Arquillian.class)
+@RunWith (PicketLinkIntegrationTests.class)
+@TargetContainers ({"jboss-as5"})
 public class POJOWSAuthorizationTestCase extends TrustTestsBase
 {  
    @SuppressWarnings("rawtypes")

@@ -22,6 +22,8 @@
 
 package org.picketlink.test.integration.util;
 
+import java.util.logging.Logger;
+
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.InitializationError;
@@ -32,12 +34,47 @@ import org.junit.runners.model.InitializationError;
  */
 public class PicketLinkIntegrationTests extends Arquillian {
 
+    private final Logger logger = Logger.getLogger(getClass().getName());
+    
     public PicketLinkIntegrationTests(Class<?> klass) throws InitializationError {
         super(klass);
     }
     
+    /* (non-Javadoc)
+     * @see org.jboss.arquillian.junit.Arquillian#run(org.junit.runner.notification.RunNotifier)
+     */
     @Override
     public void run(RunNotifier notifier) {
-        super.run(notifier);
+        TargetContainers targetContainers = getDescription().getAnnotation(TargetContainers.class);
+        String binding = getCurrentBinding();
+        boolean isSupported = false;
+        
+        if (targetContainers != null) {
+            String[] bindings = targetContainers.value();
+            
+            if (getForcedBindings() != null) {
+                bindings = getForcedBindings().split(",");
+            }
+            
+            for (String targetBindings : bindings) {
+                if (targetBindings.equals(binding)) {
+                    isSupported = true;
+                }
+            }
+        }
+        
+        if (isSupported) {
+            super.run(notifier);
+        } else {
+            logger.info("Test class " + getTestClass().getName() + " will be ignored for binding " + binding);
+        }
+    }
+
+    private String getCurrentBinding() {
+        return System.getProperty("binding");
+    }
+    
+    private String getForcedBindings() {
+        return System.getProperty("forceBinding");
     }
 }
