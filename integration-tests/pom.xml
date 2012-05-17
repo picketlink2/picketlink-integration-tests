@@ -35,8 +35,8 @@
 								<echo>Preparing Environment for ${picketlink.binding}
 									Integration Tests</echo>
 								<ant antfile="${basedir}/ant-scripts/build.xml" target="prepare-test-environment" />
-								
-								
+
+
 							</target>
 						</configuration>
 					</execution>
@@ -92,6 +92,21 @@
 	</build>
 
 	<profiles>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<version>2.1</version>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 		<profile>
 			<id>all-tests</id>
 			<build>
