@@ -5,7 +5,7 @@
 		<artifactId>picketlink-integration-tests-parent-new</artifactId>
 		<groupId>org.picketlink</groupId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../../parent</relativePath>
+		<relativePath>../parent</relativePath>
 	</parent>
 	<artifactId>picketlink-integration-container</artifactId>
 	<packaging>pom</packaging>
