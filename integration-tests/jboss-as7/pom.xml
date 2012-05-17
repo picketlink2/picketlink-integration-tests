@@ -15,12 +15,24 @@
 			<artifactId>jboss-as-arquillian-container-managed</artifactId>
 			<version>${version.arqillian_jboss_as}</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>xalan</groupId>
+					<artifactId>xalan</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.ws</groupId>
 			<artifactId>jbossws-spi</artifactId>
 			<version>1.4.1.SP1</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>xalan</groupId>
+					<artifactId>xalan</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 
