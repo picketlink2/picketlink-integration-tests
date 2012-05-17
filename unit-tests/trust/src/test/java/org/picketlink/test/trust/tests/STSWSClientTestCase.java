@@ -61,14 +61,6 @@ public class STSWSClientTestCase extends TrustTestsBase {
     private static String username = "UserA";
     private static String password = "PassA";
 
-    @Deployment(name = "picketlink-wstest-tests", testable = false)
-    @TargetsContainer("jboss")
-    public static JavaArchive createWSTestDeployment() throws ConfigurationException, ProcessingException, ParsingException,
-            InterruptedException {
-        return ShrinkWrap.createFromZipFile(JavaArchive.class, new File(
-                "../../unit-tests/trust/target/picketlink-wstest-tests.jar"));
-    }
-
     @SuppressWarnings("rawtypes")
     @Test
     public void testWSInteraction() throws Exception {

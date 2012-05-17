@@ -117,6 +117,36 @@
 	</build>
 	<dependencies>
 		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>jboss</groupId>
+			<artifactId>jboss-ejb-api</artifactId>
+			<version>4.2.1.GA</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.ejb3</groupId>
+			<artifactId>jboss-ejb3-ext-api</artifactId>
+			<version>2.0.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.spec.javax.security.jacc</groupId>
+			<artifactId>jboss-jacc-api_1.4_spec</artifactId>
+			<version>1.0.2.Final</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.picketlink</groupId>
+			<artifactId>picketlink-jbas5-single</artifactId>
+			<version>${version.picketlink}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.picketlink</groupId>
 			<artifactId>
 				picketlink-integration-util-unit-tests

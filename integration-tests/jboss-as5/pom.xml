@@ -84,6 +84,12 @@
 			</exclusions>
 		</dependency>
 		<dependency>
+			<groupId>org.picketlink</groupId>
+			<artifactId>picketlink-jbas5-single</artifactId>
+			<version>${version.picketlink}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>trove</groupId>
 			<artifactId>trove</artifactId>
 			<version>1.0.2</version>
@@ -108,59 +114,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<version>2.1</version>
-				<executions>
-					<execution>
-						<id>unpack-test-classes</id>
-						<phase>process-test-classes</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>org.picketlink</groupId>
-									<artifactId>picketlink-integration-util-unit-tests</artifactId>
-									<version>${project.version}</version>
-									<type>test-jar</type>
-									<overWrite>true</overWrite>
-									<outputDirectory>${basedir}/target/test-classes</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.picketlink</groupId>
-									<artifactId>picketlink-integration-saml-unit-tests</artifactId>
-									<version>${project.version}</version>
-									<type>test-jar</type>
-									<overWrite>true</overWrite>
-									<outputDirectory>${basedir}/target/test-classes</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.picketlink</groupId>
-									<artifactId>picketlink-integration-ws-trust-unit-tests</artifactId>
-									<version>${project.version}</version>
-									<type>test-jar</type>
-									<overWrite>true</overWrite>
-									<outputDirectory>${basedir}/target/test-classes</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.picketlink</groupId>
-									<artifactId>picketlink-integration-xacml-unit-tests</artifactId>
-									<version>${project.version}</version>
-									<type>test-jar</type>
-									<overWrite>true</overWrite>
-									<outputDirectory>${basedir}/target/test-classes</outputDirectory>
-								</artifactItem>
-<!-- 								<artifactItem> -->
-<!-- 									<groupId>org.picketlink</groupId> -->
-<!-- 									<artifactId>picketlink-integration-trust-unit-tests</artifactId> -->
-<!-- 									<version>${project.version}</version> -->
-<!-- 									<type>test-jar</type> -->
-<!-- 									<overWrite>true</overWrite> -->
-<!-- 									<outputDirectory>${basedir}/target/test-classes</outputDirectory> -->
-<!-- 								</artifactItem> -->
-							</artifactItems>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -169,5 +122,63 @@
 			</plugin>
 		</plugins>
 	</build>
-
+	
+	<profiles>
+		<profile>
+			<id>saml-tests</id>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-dependency-plugin</artifactId>
+							<version>2.1</version>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+		<profile>
+			<id>ws-trust-tests</id>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-dependency-plugin</artifactId>
+							<version>2.1</version>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+		<profile>
+			<id>xacml-tests</id>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-dependency-plugin</artifactId>
+							<version>2.1</version>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+		<profile>
+			<id>trust-tests</id>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-dependency-plugin</artifactId>
+							<version>2.1</version>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+	</profiles>
 </project>

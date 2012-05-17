@@ -23,13 +23,20 @@ package org.picketlink.test.trust.tests;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.TargetsContainer;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.picketlink.identity.federation.bindings.tomcat.PicketLinkAuthenticator;
+import org.picketlink.identity.federation.core.exceptions.ConfigurationException;
+import org.picketlink.identity.federation.core.exceptions.ParsingException;
+import org.picketlink.identity.federation.core.exceptions.ProcessingException;
 import org.picketlink.test.integration.util.MavenArtifactUtil;
 import org.picketlink.test.integration.util.TestUtil;
 
@@ -52,6 +59,13 @@ public class PicketLinkAuthenticatorTestCase {
     public static WebArchive createAuthenticatorDeployment() {
         return MavenArtifactUtil.getIntegrationMavenArchive("authenticator");
     }
+    
+    @Deployment(name = "picketlink-wstest-tests", testable = false)
+    @TargetsContainer("jboss")
+    public static JavaArchive createWSTestDeployment() throws ConfigurationException, ProcessingException, ParsingException,
+            InterruptedException {
+        return ShrinkWrap.createFromZipFile(JavaArchive.class, new File("../../unit-tests/trust/target/picketlink-wstest-tests.jar"));
+    }
 
     @Test
     public void testDistinctUsers() throws Exception {
@@ -59,6 +73,7 @@ public class PicketLinkAuthenticatorTestCase {
         WebConversation webConversation = new WebConversation();
         WebResponse webResponse = webConversation.getResponse(serviceRequest1);
         String responseText = webResponse.getText();
+        
         assertTrue(responseText.contains("UserA"));
 
         WebRequest serviceRequest2 = new GetMethodWebRequest(TestUtil.getTargetURL("/authenticator/?user=UserB"));

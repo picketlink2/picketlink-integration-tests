@@ -32,7 +32,7 @@ public class TestUtil {
     private static final String TEST_CONTAINER_BIND_HTTP_PORT = "test.container.bind.http.port";
 
     public static String getTargetURL(String uri) {
-        return "http://" + getServerAddress() + ":" + System.getProperty(TEST_CONTAINER_BIND_HTTP_PORT, "28080") + uri;
+        return "http://" + getServerAddress() + ":" + System.getProperty(TEST_CONTAINER_BIND_HTTP_PORT, "8080") + uri;
     }
 
     public static String getServerAddress() {

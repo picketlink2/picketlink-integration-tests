@@ -21,46 +21,82 @@
  */
 package org.picketlink.test.trust.tests;
 
+import static org.picketlink.test.integration.util.PicketLinkConfigurationUtil.addKeyStoreAlias;
+import static org.picketlink.test.integration.util.PicketLinkConfigurationUtil.addValidatingAlias;
+import static org.picketlink.test.integration.util.TestUtil.getServerAddress;
+
+import java.io.File;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.api.TargetsContainer;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.runner.RunWith;
 import org.picketlink.identity.federation.api.wstrust.WSTrustClient;
 import org.picketlink.identity.federation.api.wstrust.WSTrustClient.SecurityInfo;
+import org.picketlink.identity.federation.core.exceptions.ConfigurationException;
+import org.picketlink.identity.federation.core.exceptions.ParsingException;
+import org.picketlink.identity.federation.core.exceptions.ProcessingException;
 import org.picketlink.identity.federation.core.wstrust.WSTrustException;
 import org.picketlink.identity.federation.core.wstrust.plugins.saml.SAMLUtil;
+import org.picketlink.test.integration.util.MavenArtifactUtil;
+import org.picketlink.test.integration.util.TestUtil;
 import org.w3c.dom.Element;
 
 /**
  * Base class for the PicketLink trust tests
+ * 
  * @author Anil.Saldhana@redhat.com
  * @since Apr 18, 2011
  */
-@RunWith (Arquillian.class)
-public class TrustTestsBase
-{
-   /**
-    * Method gets a SAML assertion from the PicketLink STS
-    * @param username username to send to STS
-    * @param password password to send to STS
-    * @return
-    * @throws Exception
-    */
-   protected Element getAssertionFromSTS(String username, String password) throws Exception
-   {
-   // Step 1:  Get a SAML2 Assertion Token from the STS
-      WSTrustClient client = new WSTrustClient("PicketLinkSTS", "PicketLinkSTSPort",
-            "http://" + System.getProperty("test.hosts.bind.address", "localhost") + ":" + System.getProperty("test.server.port", "28080")
-            + "/picketlink-sts/PicketLinkSTS",
-            new SecurityInfo(username, password));
-      Element assertion = null;
-      try {
-         System.out.println("Invoking token service to get SAML assertion for " + username);
-         assertion = client.issueToken(SAMLUtil.SAML2_TOKEN_TYPE);
-         System.out.println("SAML assertion for " + username + " successfully obtained!");
-      } catch (WSTrustException wse) {
-         System.out.println("Unable to issue assertion: " + wse.getMessage());
-         wse.printStackTrace();
-         System.exit(1);
-      } 
-      return assertion;
-   }
+@RunWith(Arquillian.class)
+public class TrustTestsBase {
+    
+    @Deployment(name = "picketlink-sts", testable = false)
+    @TargetsContainer("jboss")
+    public static WebArchive createSTSDeployment() throws GeneralSecurityException, IOException {
+        WebArchive sts = MavenArtifactUtil.getQuickstartsMavenArchive("picketlink-sts");
+        
+        addValidatingAlias(sts, "/WEB-INF/classes/picketlink-sts.xml", getServerAddress(), getServerAddress());
+        addKeyStoreAlias(sts, "/WEB-INF/classes/sts_keystore.jks", "sts", "testpass", getServerAddress());
+        
+        return sts;
+    }
+
+    @Deployment(name = "picketlink-wstest-tests", testable = false)
+    @TargetsContainer("jboss")
+    public static JavaArchive createWSTestDeployment() throws ConfigurationException, ProcessingException, ParsingException,
+            InterruptedException {
+        return ShrinkWrap.createFromZipFile(JavaArchive.class, new File(
+                "../../unit-tests/trust/target/picketlink-wstest-tests.jar"));
+    }
+
+    /**
+     * Method gets a SAML assertion from the PicketLink STS
+     * 
+     * @param username username to send to STS
+     * @param password password to send to STS
+     * @return
+     * @throws Exception
+     */
+    protected Element getAssertionFromSTS(String username, String password) throws Exception {
+        // Step 1: Get a SAML2 Assertion Token from the STS
+        WSTrustClient client = new WSTrustClient("PicketLinkSTS", "PicketLinkSTSPort", TestUtil.getTargetURL("/picketlink-sts/PicketLinkSTS"), new SecurityInfo(username,
+                password));
+        Element assertion = null;
+        try {
+            System.out.println("Invoking token service to get SAML assertion for " + username);
+            assertion = client.issueToken(SAMLUtil.SAML2_TOKEN_TYPE);
+            System.out.println("SAML assertion for " + username + " successfully obtained!");
+        } catch (WSTrustException wse) {
+            System.out.println("Unable to issue assertion: " + wse.getMessage());
+            wse.printStackTrace();
+            System.exit(1);
+        }
+        return assertion;
+    }
 }

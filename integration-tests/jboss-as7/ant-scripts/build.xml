@@ -5,8 +5,17 @@
 	<property name="JBAS_CONFIG_ROOT" location="${JBAS7_PROFILE_DIR}" />
 	<property name="JBAS7_DEPLOY" location="${JBAS7_PROFILE_DIR}/deployments" />
 
-	<target name="prepare-test-environment">
+	<target name="prepare-test-environment" depends="unzip-jboss">
 		<echo>Integration Test Environment for JBAS7 PREPARED</echo>
+		<ant antfile="../ant-scripts/build.xml" inheritAll="true" />
+	</target>
+	
+	<target name="unzip-jboss">
+		<echo>Unzip JBOSS AS 7</echo>
+		<unzip src="${basedir}/dist/jboss-as-7.1.1.Final.zip" dest="${integration.tests.dir}/containers" />
+		<chmod dir="${integration.tests.dir}/containers" perm="ugo+rx" includes="**/*.sh" />
+		<copy todir="${jboss.as.home}/modules/org/jboss/security/xacml/main" file="${user.home}/.m2/repository/org/jboss/security/jbossxacml/2.0.8.Final/jbossxacml-2.0.8.Final.jar" />
+		<copy todir="${jboss.as.home}/modules/org/apache/xalan/main" file="${user.home}/.m2/repository/xalan/xalan/2.7.1/xalan-2.7.1.jar" />
 	</target>
 
 </project>

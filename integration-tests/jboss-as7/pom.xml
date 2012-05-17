@@ -30,105 +30,22 @@
 		<jboss.as.home>${integration.tests.containers.dir}/jboss-as-${version.jboss_as7}</jboss.as.home>
 		<jboss.as.picketlink.lib.dir>${jboss.as.home}/modules/org/picketlink/main</jboss.as.picketlink.lib.dir>
 	</properties>
+
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<version>2.1</version>
-				<executions>
-					<execution>
-						<id>unpack-test-classes</id>
-						<phase>process-test-classes</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>org.picketlink</groupId>
-									<artifactId>picketlink-integration-util-unit-tests</artifactId>
-									<version>${project.version}</version>
-									<type>test-jar</type>
-									<overWrite>true</overWrite>
-									<outputDirectory>${basedir}/target/test-classes</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.picketlink</groupId>
-									<artifactId>picketlink-integration-saml-unit-tests</artifactId>
-									<version>${project.version}</version>
-									<type>test-jar</type>
-									<overWrite>true</overWrite>
-									<outputDirectory>${basedir}/target/test-classes</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.picketlink</groupId>
-									<artifactId>picketlink-integration-ws-trust-unit-tests</artifactId>
-									<version>${project.version}</version>
-									<type>test-jar</type>
-									<overWrite>true</overWrite>
-									<outputDirectory>${basedir}/target/test-classes</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.picketlink</groupId>
-									<artifactId>picketlink-integration-xacml-unit-tests</artifactId>
-									<version>${project.version}</version>
-									<type>test-jar</type>
-									<overWrite>true</overWrite>
-									<outputDirectory>${basedir}/target/test-classes</outputDirectory>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
-					<execution>
-						<id>unpack-jboss-as</id>
-						<phase>process-test-classes</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>org.jboss.as</groupId>
-									<artifactId>jboss-as-dist</artifactId>
-									<version>${version.jboss_as7}</version>
-									<type>zip</type>
-									<overWrite>false</overWrite>
-									<outputDirectory>${integration.tests.containers.dir}</outputDirectory>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
-					<execution>
-						<id>copy</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>copy</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<!-- This should be removed when AS7 is updated the jbossxacml module 
-									is updated with 2.0.8 -->
-								<artifactItem>
-									<groupId>org.jboss.security</groupId>
-									<artifactId>jbossxacml</artifactId>
-									<version>2.0.8.Final</version>
-									<type>jar</type>
-									<overWrite>true</overWrite>
-									<outputDirectory>${jboss.as.home}/modules/org/jboss/security/xacml/main</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>xalan</groupId>
-									<artifactId>xalan</artifactId>
-									<version>2.7.1</version>
-									<type>jar</type>
-									<overWrite>true</overWrite>
-									<outputDirectory>${jboss.as.home}/modules/org/apache/xalan/main</outputDirectory>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
-				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.12</version>
 			</plugin>
 			<!-- This plugin execute some transformations in the standalone.xml fo 
 				the JBoss AS7 installation in order to run the integration tests. -->
@@ -138,7 +55,7 @@
 				<version>1.0</version>
 				<executions>
 					<execution>
-						<phase>pre-integration-test</phase>
+						<phase>process-test-classes</phase>
 						<goals>
 							<goal>transform</goal>
 						</goals>
@@ -151,14 +68,6 @@
 										<include>standalone.xml</include>
 									</includes>
 									<stylesheet>src/test/resources/xslt/addSecurityDomain.xslt</stylesheet>
-								</transformationSet>
-								<transformationSet>
-									<dir>${jboss.as.home}/standalone/configuration/</dir>
-									<outputDir>${jboss.as.home}/standalone/configuration</outputDir>
-									<includes>
-										<include>standalone.xml</include>
-									</includes>
-									<stylesheet>src/test/resources/xslt/changeBindingPorts.xslt</stylesheet>
 								</transformationSet>
 								<transformationSet>
 									<dir>${jboss.as.home}/modules/org/picketlink/main</dir>
@@ -191,12 +100,71 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>2.12</version>
-			</plugin>
 		</plugins>
 	</build>
-
+	
+	<profiles>
+		<profile>
+			<id>saml-tests</id>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-dependency-plugin</artifactId>
+							<version>2.1</version>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+		<profile>
+			<id>ws-trust-tests</id>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-dependency-plugin</artifactId>
+							<version>2.1</version>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+		<profile>
+			<id>xacml-tests</id>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-dependency-plugin</artifactId>
+							<version>2.1</version>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+		<profile>
+			<id>trust-tests</id>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-dependency-plugin</artifactId>
+							<version>2.1</version>
+							<executions>
+								<execution>
+									<id>unpack-test-classes</id>
+									<phase>none</phase>
+								</execution>
+							</executions>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+	</profiles>
 </project>

@@ -13,6 +13,8 @@
 	<target name="unzip-jboss">
 		<echo>Unzip Apache Tomcat AS 6</echo>
 		<unzip src="${basedir}/dist/apache-tomcat-6.0.26.zip" dest="${integration.tests.dir}/containers" />
+		<copy todir="${jboss.as.picketlink.lib.dir}" file="${user.home}/.m2/repository/log4j/log4j/1.2.14/log4j-1.2.14.jar" />
+		<copy todir="${jboss.as.picketlink.lib.dir}" file="${user.home}/.m2/repository/org/picketbox/picketbox/4.0.8.Final/picketbox-4.0.8.Final.jar" />
 	</target>
 
 </project>

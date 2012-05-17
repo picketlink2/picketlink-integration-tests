@@ -1,29 +1,25 @@
 <arquillian xmlns="http://jboss.com/arquillian" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://jboss.org/schema/arquillian http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
-	<engine>
-		<property name="maxTestClassesBeforeRestart">20</property>
-	</engine>
-
 	<container qualifier="jboss" default="true">
 		<configuration>
 			<property name="jbossHome">${jboss.as.home}</property>
 			<!-- <property name="javaHome">/usr/java/jdk1.6.0_30</property> -->
 			<!-- <property name="portSet">ports-01</property> -->
-			<property name="providerUrl">jnp://${test.container.bind.address}:21099</property>
-			<property name="bindAddress">${test.container.bind.address}</property>
+			<property name="providerUrl">jnp://localhost:1099</property>
+			<property name="bindAddress">localhost</property>
 			<property name="outputToConsole">false</property>
 			<property name="profileName">default</property>
-			<property name="httpPort">${test.container.bind.http.port}</property>
-			<property name="rmiPort">21099</property>
-			<property name="javaVmArguments">-XX:MaxPermSize=512m -Didp.url=http://${test.container.bind.address}:${test.container.bind.http.port}/idp/
-				-Didp-sig.url=http://${test.container.bind.address}:${test.container.bind.http.port}/idp-sig/
-				-Dsales-post.url=http://${test.container.bind.address}:${test.container.bind.http.port}/sales-post/
-				-Dsales-saml11.url=http://${test.container.bind.address}:${test.container.bind.http.port}/sales-saml11
-				-Dsales-post-valve.url=http://${test.container.bind.address}:${test.container.bind.http.port}/sales-post-valve/
-				-Dsales-post-sig.url=http://${test.container.bind.address}:${test.container.bind.http.port}/sales-post-sig/
-				-Demployee.url=http://${test.container.bind.address}:${test.container.bind.http.port}/employee/
-				-Demployee-redirect-valve.url=http://${test.container.bind.address}:${test.container.bind.http.port}/employee-redirect-valve/
-				-Demployee-sig.url=http://${test.container.bind.address}:${test.container.bind.http.port}/employee-sig/
+			<property name="httpPort">8080</property>
+			<property name="rmiPort">1099</property>
+			<property name="javaVmArguments">-Xms1024m -Xmx1024m -XX:MaxPermSize=512m -Didp.url=http://localhost:8080/idp/
+				-Didp-sig.url=http://localhost:8080/idp-sig/
+				-Dsales-post.url=http://localhost:8080/sales-post/
+				-Dsales-saml11.url=http://localhost:8080/sales-saml11
+				-Dsales-post-valve.url=http://localhost:8080/sales-post-valve/
+				-Dsales-post-sig.url=http://localhost:8080/sales-post-sig/
+				-Demployee.url=http://localhost:8080/employee/
+				-Demployee-redirect-valve.url=http://localhost:8080/employee-redirect-valve/
+				-Demployee-sig.url=http://localhost:8080/employee-sig/
 			</property>
 		</configuration>
 	</container>
