@@ -7,7 +7,6 @@ import org.picketlink.test.integration.util.PicketLinkIntegrationTests;
 import org.picketlink.test.integration.util.TargetContainers;
 
 @RunWith(PicketLinkIntegrationTests.class)
-@TargetContainers({"jboss-as5"})
 public abstract class AbstractSAMLIntegrationTests {
 
     String IDP_URL = getTargetURL("/idp/");

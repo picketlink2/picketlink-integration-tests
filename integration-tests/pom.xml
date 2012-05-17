@@ -67,6 +67,10 @@
 							</includes>
 							<systemProperties>
 								<property>
+									<name>project.artifactId</name>
+									<value>${project.artifactId}</value>
+								</property>
+								<property>
 									<name>project.version</name>
 									<value>${project.version}</value>
 								</property>

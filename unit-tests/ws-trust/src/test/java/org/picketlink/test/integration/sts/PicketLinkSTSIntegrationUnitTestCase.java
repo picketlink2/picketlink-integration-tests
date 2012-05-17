@@ -89,7 +89,7 @@ import org.w3c.dom.Element;
  * @since Jun 8, 2010
  */
 @RunWith(PicketLinkIntegrationTests.class)
-@TargetContainers ({"jboss-as5", "jboss-as6", "jboss-as7"})
+@TargetContainers ({"jbas5", "jbas6", "jbas7"})
 public class PicketLinkSTSIntegrationUnitTestCase extends AbstractWSTrustIntegrationTests {
     private static WSTrustClient client;
 

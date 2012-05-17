@@ -55,7 +55,7 @@ import com.meterware.httpunit.WebResponse;
  * @author Anil.Saldhana@redhat.com
  * @since Apr 8, 2010
  */
-@TargetContainers ({"jboss-as5", "jboss-as6", "jboss-as7", "tomcat-6"})
+@TargetContainers ({"jbas5", "jbas6", "jbas7", "tomcat6"})
 public class SAML2MixedBindingGlobalLogOutUnitTestCase extends AbstractSAMLIntegrationTests {
 
     @Test

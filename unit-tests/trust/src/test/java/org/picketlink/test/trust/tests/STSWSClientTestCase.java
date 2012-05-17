@@ -49,7 +49,7 @@ import org.w3c.dom.Element;
  * @since Oct 3, 2010
  */
 @RunWith(PicketLinkIntegrationTests.class)
-@TargetContainers ({"jboss-as5"})
+@TargetContainers ({"jbas5"})
 public class STSWSClientTestCase extends TrustTestsBase {
     
     private static String username = "UserA";

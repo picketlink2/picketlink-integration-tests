@@ -48,7 +48,7 @@ public class PicketLinkIntegrationTests extends Arquillian {
         TargetContainers targetContainers = getDescription().getAnnotation(TargetContainers.class);
         String binding = getCurrentBinding();
         boolean isSupported = false;
-        
+
         if (targetContainers != null) {
             String[] bindings = targetContainers.value();
             
@@ -57,7 +57,7 @@ public class PicketLinkIntegrationTests extends Arquillian {
             }
             
             for (String targetBindings : bindings) {
-                if (targetBindings.equals(binding)) {
+                if (binding.contains(targetBindings)) {
                     isSupported = true;
                 }
             }
@@ -71,7 +71,7 @@ public class PicketLinkIntegrationTests extends Arquillian {
     }
 
     private String getCurrentBinding() {
-        return System.getProperty("binding");
+        return System.getProperty("project.artifactId");
     }
     
     private String getForcedBindings() {
