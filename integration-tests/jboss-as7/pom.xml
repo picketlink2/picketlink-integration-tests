@@ -88,6 +88,14 @@
 									<stylesheet>src/test/resources/xslt/addSecurityDomain.xslt</stylesheet>
 								</transformationSet>
 								<transformationSet>
+									<dir>${jboss.as.home}/standalone/configuration/</dir>
+									<outputDir>${jboss.as.home}/standalone/configuration</outputDir>
+									<includes>
+										<include>standalone.xml</include>
+									</includes>
+									<stylesheet>src/test/resources/xslt/changeBindingPorts.xslt</stylesheet>
+								</transformationSet>
+								<transformationSet>
 									<dir>${jboss.as.home}/modules/org/picketlink/main</dir>
 									<outputDir>${jboss.as.home}/modules/org/picketlink/main</outputDir>
 									<includes>
