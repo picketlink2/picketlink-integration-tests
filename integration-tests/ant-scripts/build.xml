@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="build-common" default="prepare-test-environment">
 
-	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpath="${user.home}/.m2/repository/ant-contrib/ant-contrib/1.0b3/ant-contrib-1.0b3.jar" />
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpath="/var/lib/stickshift/bb81a7ed8de645558e1e356d57c7d1cf/.m2/repository/ant-contrib/ant-contrib/1.0b3/ant-contrib-1.0b3.jar" />
 
 	<target name="prepare-test-environment" depends="copy-files">
 		<echo>Finishing the integration environment preparation</echo>
