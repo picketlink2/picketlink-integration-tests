@@ -13,11 +13,11 @@
 		<module>parent</module>
 		
 		<!-- Unit test modules -->
-		<module>unit-tests/util</module>
-		<module>unit-tests/saml</module>
-		<module>unit-tests/ws-trust</module>
-		<module>unit-tests/xacml</module>
-		<module>unit-tests/trust</module>
+<!-- 		<module>unit-tests/util</module> -->
+<!-- 		<module>unit-tests/saml</module> -->
+<!-- 		<module>unit-tests/ws-trust</module> -->
+<!-- 		<module>unit-tests/xacml</module> -->
+<!-- 		<module>unit-tests/trust</module> -->
 		
 		<!-- Integration test modules -->
 		<module>integration-tests</module>
