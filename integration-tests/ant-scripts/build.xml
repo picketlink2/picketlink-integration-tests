@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="build-common" default="prepare-test-environment">
 
-	<property name="ant-contib.jar" location="..." />
-
-	<taskdef resource="net/sf/antcontrib/antlib.xml" uri="http://ant-contrib.sourceforge.net">
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
 		<classpath>
-			<pathelement location="/var/lib/stickshift/bb81a7ed8de645558e1e356d57c7d1cf/.m2/repository/ant-contrib/ant-contrib/1.0b3/ant-contrib-1.0b3.jar" />
+			<pathelement location="${user.home}/.m2/repository/ant-contrib/ant-contrib/1.0b3/ant-contrib-1.0b3.jar" />
 		</classpath>
 	</taskdef>
 
