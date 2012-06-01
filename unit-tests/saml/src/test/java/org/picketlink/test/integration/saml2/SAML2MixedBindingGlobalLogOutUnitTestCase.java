@@ -65,6 +65,7 @@ public class SAML2MixedBindingGlobalLogOutUnitTestCase extends AbstractSAMLInteg
 
     private void hitURLs() throws Exception {
         System.out.println("Trying " + SALES_POST_URL);
+
         // Sales post Application Login
         WebRequest serviceRequest1 = new GetMethodWebRequest(SALES_POST_URL);
         WebConversation webConversation = new WebConversation();

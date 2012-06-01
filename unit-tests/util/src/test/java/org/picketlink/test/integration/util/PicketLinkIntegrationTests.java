@@ -47,26 +47,31 @@ public class PicketLinkIntegrationTests extends Arquillian {
     public void run(RunNotifier notifier) {
         TargetContainers targetContainers = getDescription().getAnnotation(TargetContainers.class);
         String currentModule = getCurrentBinding();
+        
         boolean isSupported = false;
-
-        if (targetContainers != null) {
-            String[] bindings = targetContainers.value();
-            
-            for (String binding : bindings) {
-                if (currentModule.contains(binding)) {
-                    if (getForcedBindings() != null) {
-                        String[] forces = getForcedBindings().split(",");
-                        
-                        for (String string : forces) {
-                            if (currentModule.contains(string)) {
-                                isSupported = true;
+        
+        if (currentModule != null) {
+            if (targetContainers != null) {
+                String[] bindings = targetContainers.value();
+                
+                for (String binding : bindings) {
+                    if (currentModule.contains(binding)) {
+                        if (getForcedBindings() != null) {
+                            String[] forces = getForcedBindings().split(",");
+                            
+                            for (String string : forces) {
+                                if (currentModule.contains(string)) {
+                                    isSupported = true;
+                                }
                             }
+                        } else {
+                            isSupported = true;    
                         }
-                    } else {
-                        isSupported = true;    
                     }
                 }
             }
+        } else {
+            isSupported = true;
         }
         
         if (isSupported) {

@@ -727,7 +727,7 @@ public class PicketLinkSTSIntegrationUnitTestCase extends AbstractWSTrustIntegra
             // if the public key has been used as proof, we should be able to retrieve it from KeyValueType.
             if (usePublicKey == true) {
                 KeyValueType keyValue = (KeyValueType) keyInfo.getContent().get(0);
-                List<Object> keyValueContent = keyValue.getContent();
+                List<Object> keyValueContent = keyInfo.getContent();
                 Assert.assertEquals("Unexpected key value content size", 1, keyValueContent.size());
                 Assert.assertEquals("Unexpected key value content type", RSAKeyValueType.class, keyValueContent.get(0)
                         .getClass());
