@@ -1,22 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="build-common" default="prepare-test-environment">
 
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
+		<classpath>
+			<pathelement location="${user.home}/.m2/repository/ant-contrib/ant-contrib/1.0b3/ant-contrib-1.0b3.jar" />
+		</classpath>
+	</taskdef>
+
 	<target name="prepare-test-environment" depends="copy-files">
 		<echo>Finishing the integration environment preparation</echo>
 	</target>
 
 	<target name="copy-files">
-		<echo>Copying PicketLink libraries (${picketlink.binding}) to ${jboss.as.picketlink.lib.dir}</echo>
+		<if>
+			<isset property="picketlink.binding" />
+			<then>
+				<echo>Copying PicketLink libraries (${picketlink.binding}) to ${jboss.as.picketlink.lib.dir}</echo>
 
-		<mkdir dir="${jboss.as.picketlink.lib.dir}" />
+				<if>
+					<available file="${jboss.as.picketlink.lib.dir}" type="dir" />
+					<else>
+						<mkdir dir="${jboss.as.picketlink.lib.dir}" />
+					</else>
+				</if>
 
-		<copy failonerror="false" todir="${jboss.as.picketlink.lib.dir}" file="${user.home}/.m2/repository/org/picketlink/picketlink-core/${version.picketlink}/picketlink-core-${version.picketlink}.jar" />
-		<copy failonerror="false" todir="${jboss.as.picketlink.lib.dir}" file="${user.home}/.m2/repository/org/picketlink/distribution/picketlink-${picketlink.binding}/${version.picketlink}/picketlink-${picketlink.binding}-${version.picketlink}.jar" />
+				<copy todir="${jboss.as.picketlink.lib.dir}" file="${user.home}/.m2/repository/org/picketlink/picketlink-core/${version.picketlink}/picketlink-core-${version.picketlink}.jar" />
+				<copy todir="${jboss.as.picketlink.lib.dir}" file="${user.home}/.m2/repository/org/picketlink/distribution/picketlink-${picketlink.binding}/${version.picketlink}/picketlink-${picketlink.binding}-${version.picketlink}.jar" />
+			</then>
+		</if>
 
 		<echo>Copying custom configuration files from ${basedir}/dist/custom-conf</echo>
-		<copy failonerror="false" todir="${JBAS_CONFIG_ROOT}">
-			<fileset dir="${basedir}/dist/custom-conf" />
-		</copy>
+		<if>
+			<available file="${basedir}/dist/custom-conf" type="dir" />
+			<then>
+				<copy todir="${JBAS_CONFIG_ROOT}">
+					<fileset dir="${basedir}/dist/custom-conf" />
+				</copy>
+			</then>
+		</if>
 	</target>
 
 

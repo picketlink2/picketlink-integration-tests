@@ -22,6 +22,12 @@
 			<version>1.6</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.picketbox</groupId>
+			<artifactId>picketbox</artifactId>
+			<version>4.0.8.Final</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<properties>
