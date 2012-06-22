@@ -48,7 +48,6 @@ import org.w3c.dom.Element;
  * @author Anil Saldhana
  * @since Oct 3, 2010
  */
-@RunWith(PicketLinkIntegrationTests.class)
 @TargetContainers ({"jbas5"})
 public class STSWSClientTestCase extends TrustTestsBase {
     
@@ -59,7 +58,7 @@ public class STSWSClientTestCase extends TrustTestsBase {
     @Test
     public void testWSInteraction() throws Exception {
         Element assertion = getAssertionFromSTS(username, password);
-
+        
         // Step 2: Stuff the Assertion on the SOAP message context and add the SAML2Handler to client side handlers
         URL wsdl = new URL(TestUtil.getTargetURL("/picketlink-wstest-tests/WSTestBean?wsdl"));
         QName serviceName = new QName("http://ws.trust.test.picketlink.org/", "WSTestBeanService");
