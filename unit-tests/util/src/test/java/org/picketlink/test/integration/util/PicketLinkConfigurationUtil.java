@@ -81,6 +81,27 @@ public class PicketLinkConfigurationUtil {
     
     /**
      * <p>
+     * Adds a new trusted domain to the <Trust><Domains> list.
+     * </p>
+     * 
+     * @param webArchive
+     * @param domain
+     */
+    public static final void changeIdentityURL(WebArchive webArchive, String identityURL) {
+        final Node picketlink = getPicketLinkConfigNode(webArchive);
+        final Document document = getPicketLinkConfigDocument(picketlink);
+
+        Element element = DocumentUtil.getElement(document, new QName(SAMLConfigParser.IDENTITY_URL));
+
+        element.setTextContent(identityURL);
+
+        webArchive.delete(picketlink.getPath());
+
+        overridePicketLinkConfig(webArchive, picketlink, document);
+    }
+    
+    /**
+     * <p>
      * Adds a new alias to the keystore. Defaults to /WEB-INF/classes/jbid_test_keystore.jks. 
      * </p>
      * 
