@@ -53,7 +53,7 @@ import com.meterware.httpunit.WebResponse;
  * @since Sep 13, 2011
  */
 @RunWith(PicketLinkIntegrationTests.class)
-@TargetContainers ({"jbas5"})
+@TargetContainers ({"jbas5", "eap5"})
 public class PicketLinkAuthenticatorTestCase {
     
     @Deployment(name = "authenticator", testable = false)

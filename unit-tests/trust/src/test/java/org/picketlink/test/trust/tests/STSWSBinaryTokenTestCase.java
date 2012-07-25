@@ -62,7 +62,7 @@ import org.picketlink.trust.jbossws.handler.BinaryTokenHandler;
  * @since Apr 5, 2011
  */
 @RunWith(PicketLinkIntegrationTests.class)
-@TargetContainers ({"jbas5"})
+@TargetContainers ({"jbas5", "eap5"})
 public class STSWSBinaryTokenTestCase {
   
     @Deployment(name = "picketlink-wstest-tests", testable = false)

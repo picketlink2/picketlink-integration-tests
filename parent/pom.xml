@@ -25,6 +25,7 @@
 		<version.arquillian>1.0.0.CR7</version.arquillian>
 		<version.arquillian_drone>1.0.0.CR4</version.arquillian_drone>
 		<version.junit>4.8.1</version.junit>
+		<eap5-dist-zip>jboss-eap-noauth-5.1.3.zip</eap5-dist-zip>
 	</properties>
 
 	<dependencyManagement>
