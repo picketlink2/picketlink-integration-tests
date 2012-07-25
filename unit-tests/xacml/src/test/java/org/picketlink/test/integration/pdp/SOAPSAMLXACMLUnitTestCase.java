@@ -50,7 +50,7 @@ import org.picketlink.test.integration.util.TestUtil;
  * @author Anil.Saldhana@redhat.com
  * @since Jul 31, 2009
  */
-@TargetContainers ({"jbas5", "jbas6", "jbas7"})
+@TargetContainers ({"jbas5", "jbas6", "jbas7", "eap5"})
 public class SOAPSAMLXACMLUnitTestCase extends AbstractXACMLIntegrationTests {
     // Change it to true when you have an end point running locally
     private boolean sendRequest = true;

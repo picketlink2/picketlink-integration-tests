@@ -48,7 +48,7 @@ import org.w3c.dom.Element;
  * @author Anil Saldhana
  * @since Oct 3, 2010
  */
-@TargetContainers ({"jbas5"})
+@TargetContainers ({"jbas5", "eap5"})
 public class STSWSClientTestCase extends TrustTestsBase {
     
     private static String username = "UserA";

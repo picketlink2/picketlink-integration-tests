@@ -57,7 +57,7 @@ import com.meterware.httpunit.WebResponse;
  * @author Anil.Saldhana@redhat.com
  * @since Jul 7, 2011
  */
-@TargetContainers ({"jbas5", "jbas6", "jbas7", "tomcat6"})
+@TargetContainers ({"jbas5", "jbas6", "jbas7", "tomcat6", "eap5"})
 public class SAML11IDPFirstUnitTestCase extends AbstractSAMLIntegrationTests {
 
     @Test

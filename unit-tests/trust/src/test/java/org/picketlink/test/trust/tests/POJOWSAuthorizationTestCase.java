@@ -48,7 +48,7 @@ import org.w3c.dom.Element;
  * @since Oct 3, 2010
  */
 @RunWith (PicketLinkIntegrationTests.class)
-@TargetContainers ({"jbas5"})
+@TargetContainers ({"jbas5", "eap5"})
 public class POJOWSAuthorizationTestCase extends TrustTestsBase
 {  
    @SuppressWarnings("rawtypes")

@@ -108,7 +108,7 @@
 							<inherited>true</inherited>
 							<executions>
 								<execution>
-									<id>unpack-test-classes</id>
+									<id>unpack-all-test-classes</id>
 									<phase>process-test-classes</phase>
 									<goals>
 										<goal>unpack</goal>
@@ -177,7 +177,7 @@
 							<inherited>true</inherited>
 							<executions>
 								<execution>
-									<id>unpack-test-classes</id>
+									<id>unpack-saml-test-classes</id>
 									<phase>process-test-classes</phase>
 									<goals>
 										<goal>unpack</goal>
@@ -221,7 +221,7 @@
 							<inherited>true</inherited>
 							<executions>
 								<execution>
-									<id>unpack-test-classes</id>
+									<id>unpack-ws-trust-test-classes</id>
 									<phase>process-test-classes</phase>
 									<goals>
 										<goal>unpack</goal>
@@ -265,7 +265,7 @@
 							<inherited>true</inherited>
 							<executions>
 								<execution>
-									<id>unpack-test-classes</id>
+									<id>unpack-xacml-test-classes</id>
 									<phase>process-test-classes</phase>
 									<goals>
 										<goal>unpack</goal>
@@ -309,7 +309,7 @@
 							<inherited>true</inherited>
 							<executions>
 								<execution>
-									<id>unpack-test-classes</id>
+									<id>unpack-trust-test-classes</id>
 									<phase>process-test-classes</phase>
 									<goals>
 										<goal>unpack</goal>
