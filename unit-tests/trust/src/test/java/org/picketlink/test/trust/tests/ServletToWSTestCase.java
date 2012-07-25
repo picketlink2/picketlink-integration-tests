@@ -51,7 +51,7 @@ import org.picketlink.test.integration.util.TestUtil;
  * @since May 9, 2011
  */
 @RunWith(PicketLinkIntegrationTests.class)
-@TargetContainers ({"jbas5"})
+@TargetContainers ({"jbas5", "eap5"})
 public class ServletToWSTestCase {
     
     @Deployment(name = "binary-test", testable = false)

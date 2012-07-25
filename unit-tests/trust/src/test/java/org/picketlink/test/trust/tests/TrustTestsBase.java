@@ -55,7 +55,7 @@ import org.w3c.dom.Element;
  * @since Apr 18, 2011
  */
 @RunWith(PicketLinkIntegrationTests.class)
-@TargetContainers ({"jbas5"})
+@TargetContainers ({"jbas5", "eap5"})
 public class TrustTestsBase {
     
     @Deployment(name = "picketlink-sts", testable = false)
