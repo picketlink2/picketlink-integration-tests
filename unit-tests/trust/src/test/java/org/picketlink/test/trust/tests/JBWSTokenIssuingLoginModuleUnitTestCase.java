@@ -107,7 +107,7 @@ public class JBWSTokenIssuingLoginModuleUnitTestCase extends TrustTestsBase {
                 log.trace(content);
             }
 
-            Pattern p = Pattern.compile("[.|\\s]*Credential\\[\\d\\]\\=SamlCredential\\[.*\\]");
+            Pattern p = Pattern.compile("[.|\\s]*Credential\\[\\d\\]\\=SamlCredential\\[.*\\]", Pattern.MULTILINE);
             Matcher m = p.matcher(content);
             boolean samlCredPresentOnSubject = m.find();
             assertTrue("SamlCredential on subject is missing for (" + appUri + ")", samlCredPresentOnSubject);
