@@ -1,0 +1,4 @@
+<jboss-web>
+  <context-root>/test-app-1</context-root>
+  <security-domain>test-app-1</security-domain>
+</jboss-web>

@@ -13,7 +13,7 @@
 		<binding.server>jboss-as5</binding.server>
 		<picketlink.binding>jbas5</picketlink.binding>
 		<jboss.as.home>${integration.tests.containers.dir}/jboss-eap-5.1/jboss-as</jboss.as.home>
-		<jboss.as.picketlink.lib.dir>${jboss.as.home}/server/default/deploy/picketlink</jboss.as.picketlink.lib.dir>
+		<jboss.as.picketlink.lib.dir>${jboss.as.home}/common/lib</jboss.as.picketlink.lib.dir>
 	</properties>
 
 	<dependencies>
@@ -34,7 +34,6 @@
 			<artifactId>jboss-as-client</artifactId>
 			<version>5.1.0.GA</version>
 			<type>pom</type>
-			<scope>test</scope>
 			<exclusions>
 				<exclusion>
 					<groupId>trove</groupId>
@@ -49,17 +48,28 @@
 			<type>pom</type>
 		</dependency>		
 		<dependency>
-			<groupId>org.picketlink</groupId>
-			<artifactId>picketlink-jbas5-single</artifactId>
+			<groupId>org.picketlink.distribution</groupId>
+			<artifactId>picketlink-jbas5</artifactId>
 			<version>${version.picketlink}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.picketlink</groupId>
+			<artifactId>picketlink-core</artifactId>
+			<version>${version.picketlink}</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.picketbox</groupId>
+					<artifactId>picketbox</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!--  dependency>
 			<groupId>trove</groupId>
 			<artifactId>trove</artifactId>
 			<version>1.0.2</version>
-			<scope>test</scope>
-		</dependency>
+		</dependency -->
 	</dependencies>
 
 	<build>
@@ -77,6 +87,21 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<version>2.12</version>
+				<configuration>
+					<argLine>-Djava.endorsed.dirs=${jboss.as.home}/lib/endorsed</argLine>
+					<additionalClasspathElements>
+						<additionalClasspathElement>${jboss.as.home}/client/jbossall-client.jar</additionalClasspathElement>
+						<additionalClasspathElement>${jboss.as.home}/client/jbossws-native-core.jar</additionalClasspathElement>
+						<additionalClasspathElement>${jboss.as.home}/client/jbossws-native-client.jar</additionalClasspathElement>
+						<additionalClasspathElement>${jboss.as.home}/client/jbossws-spi.jar</additionalClasspathElement>
+						<additionalClasspathElement>${jboss.as.home}/client/jbossws-native-jaxrpc.jar</additionalClasspathElement>
+						<additionalClasspathElement>${jboss.as.home}/client/jbossws-common.jar</additionalClasspathElement>
+						<additionalClasspathElement>${jboss.as.home}/client/jboss-xml-binding.jar</additionalClasspathElement>
+						<additionalClasspathElement>${jboss.as.home}/client/mail.jar</additionalClasspathElement>
+						<additionalClasspathElement>${jboss.as.home}/client/wsdl4j.jar</additionalClasspathElement>
+						<additionalClasspathElement>${jboss.as.home}/client/wstx.jar</additionalClasspathElement>
+					</additionalClasspathElements>
+				</configuration>
 			</plugin>
 		</plugins>
 		<pluginManagement>

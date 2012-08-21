@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deployment xmlns="urn:jboss:bean-deployer:2.0">
+
+   <application-policy xmlns="urn:jboss:security-beans:1.0" name="test-app-2">
+      <authentication>
+         <login-module code="org.picketlink.trust.jbossws.jaas.JBWSTokenIssuingLoginModule" flag="required">
+            <module-option name="endpointAddress">http://${jboss.bind.address}:8080/picketlink-sts/PicketLinkSTS</module-option>
+            <module-option name="wspAppliesTo">http://services.testcorp.org/provider1</module-option>
+            <module-option name="handlerChain">binary</module-option>
+            <module-option name="serviceName">PicketLinkSTS</module-option>
+            <module-option name="portName">PicketLinkSTSPort</module-option>
+            <module-option name="inject.callerprincipal">true</module-option>
+            <module-option name="groupPrincipalName">Membership</module-option>
+            <module-option name="username">UserA</module-option>
+            <module-option name="password">PassA</module-option>
+         </login-module>
+         <login-module code="org.jboss.security.auth.spi.IdentityLoginModule" flag="required">
+            <module-option name="principal">added-via-IdentityLoginModule</module-option>
+            <module-option name="roles">role1</module-option>
+         </login-module>
+      </authentication>
+   </application-policy>
+   
+   <bean name="test-app-2-SystemProperties"
+        class="org.jboss.varia.property.SystemPropertiesService"> 
+        <property name="properties">
+        binary.http.header=TEST_HEADER
+        </property>
+   </bean>
+
+</deployment>
