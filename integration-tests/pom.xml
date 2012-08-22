@@ -32,11 +32,9 @@
 						<phase>process-test-classes</phase>
 						<configuration>
 							<target>
-								<echo>Preparing Environment for ${picketlink.binding}
-									Integration Tests</echo>
+								<property name="maven.repo.local" value="${settings.localRepository}" />
+								<echo>Preparing Environment for ${picketlink.binding} Integration Tests</echo>
 								<ant antfile="${basedir}/ant-scripts/build.xml" target="prepare-test-environment" />
-
-
 							</target>
 						</configuration>
 					</execution>
@@ -85,6 +83,10 @@
 								<property>
 									<name>jboss.as.home</name>
 									<value>${jboss.as.home}</value>
+								</property>
+								<property>
+									<name>maven.repo.local</name>
+									<value>${settings.localRepository}</value>
 								</property>
 							</systemProperties>
 							<reportNameSuffix>SAML-${binding.server}</reportNameSuffix>
