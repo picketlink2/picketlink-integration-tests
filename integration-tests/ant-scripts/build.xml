@@ -3,7 +3,7 @@
 
 	<taskdef resource="net/sf/antcontrib/antlib.xml">
 		<classpath>
-			<pathelement location="${user.home}/.m2/repository/ant-contrib/ant-contrib/1.0b3/ant-contrib-1.0b3.jar" />
+			<pathelement location="${maven.repo.local}/ant-contrib/ant-contrib/1.0b3/ant-contrib-1.0b3.jar" />
 		</classpath>
 	</taskdef>
 
@@ -15,7 +15,7 @@
 		<if>
 			<isset property="picketlink.binding" />
 			<then>
-				<echo>Copying PicketLink libraries (${picketlink.binding}) to ${jboss.as.picketlink.lib.dir}</echo>
+				<echo>Copying PicketLink libraries (${picketlink.binding}) from ${maven.repo.local} to ${jboss.as.picketlink.lib.dir}</echo>
 
 				<if>
 					<available file="${jboss.as.picketlink.lib.dir}" type="dir" />
@@ -24,8 +24,8 @@
 					</else>
 				</if>
 
-				<copy todir="${jboss.as.picketlink.lib.dir}" file="${user.home}/.m2/repository/org/picketlink/picketlink-core/${version.picketlink}/picketlink-core-${version.picketlink}.jar" />
-				<copy todir="${jboss.as.picketlink.lib.dir}" file="${user.home}/.m2/repository/org/picketlink/distribution/picketlink-${picketlink.binding}/${version.picketlink}/picketlink-${picketlink.binding}-${version.picketlink}.jar" />
+				<copy todir="${jboss.as.picketlink.lib.dir}" file="${maven.repo.local}/org/picketlink/picketlink-core/${version.picketlink}/picketlink-core-${version.picketlink}.jar" />
+				<copy todir="${jboss.as.picketlink.lib.dir}" file="${maven.repo.local}/org/picketlink/distribution/picketlink-${picketlink.binding}/${version.picketlink}/picketlink-${picketlink.binding}-${version.picketlink}.jar" />
 			</then>
 		</if>
 

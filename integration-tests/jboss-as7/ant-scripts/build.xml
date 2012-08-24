@@ -14,8 +14,8 @@
 		<echo>Unzip JBOSS AS 7</echo>
 		<unzip src="${basedir}/dist/jboss-as-7.1.1.Final.zip" dest="${integration.tests.dir}/containers" />
 		<chmod dir="${integration.tests.dir}/containers" perm="ugo+rx" includes="**/*.sh" />
-		<copy todir="${jboss.as.home}/modules/org/jboss/security/xacml/main" file="${user.home}/.m2/repository/org/jboss/security/jbossxacml/2.0.8.Final/jbossxacml-2.0.8.Final.jar" />
-		<copy todir="${jboss.as.home}/modules/org/apache/xalan/main" file="${user.home}/.m2/repository/xalan/xalan/2.7.1/xalan-2.7.1.jar" />
+		<copy todir="${jboss.as.home}/modules/org/jboss/security/xacml/main" file="${maven.repo.local}/org/jboss/security/jbossxacml/2.0.8.Final/jbossxacml-2.0.8.Final.jar" />
+		<copy todir="${jboss.as.home}/modules/org/apache/xalan/main" file="${maven.repo.local}/xalan/xalan/2.7.1/xalan-2.7.1.jar" />
 	</target>
 
 </project>
