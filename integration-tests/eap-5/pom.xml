@@ -12,7 +12,10 @@
 	<properties>
 		<binding.server>jboss-as5</binding.server>
 		<picketlink.binding>jbas5</picketlink.binding>
-		<jboss.as.home>${integration.tests.containers.dir}/jboss-eap-5.1/jboss-as</jboss.as.home>
+<!--
+		<picketlink.dist.dir>${integration.tests.containers.dir}/jboss-eap-5.2/picketlink/picketlink-federation</picketlink.dist.dir>
+-->
+		<jboss.as.home>${integration.tests.containers.dir}/jboss-eap-5.2/jboss-as</jboss.as.home>
 		<jboss.as.picketlink.lib.dir>${jboss.as.home}/common/lib</jboss.as.picketlink.lib.dir>
 	</properties>
 
