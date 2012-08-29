@@ -36,6 +36,14 @@
 						flag="required" />
 				</authentication>
 			</security-domain>
+			<security-domain name="authenticator" cache-type="default">
+                <authentication>
+                    <login-module code="org.picketlink.identity.federation.bindings.jboss.auth.TestRequestUserLoginModule" flag="required">
+                        <module-option name="usersProperties" value="users.properties"/>
+                        <module-option name="rolesProperties" value="roles.properties"/>
+                    </login-module>
+                </authentication>
+            </security-domain>
 			<xsl:apply-templates select="@* | *" />
 		</security-domains>
 	</xsl:template>

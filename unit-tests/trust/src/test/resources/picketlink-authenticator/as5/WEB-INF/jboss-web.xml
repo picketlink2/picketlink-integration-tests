@@ -1,0 +1,4 @@
+<jboss-web>
+<security-domain>authenticator</security-domain>
+<context-root>authenticator</context-root>
+</jboss-web>
