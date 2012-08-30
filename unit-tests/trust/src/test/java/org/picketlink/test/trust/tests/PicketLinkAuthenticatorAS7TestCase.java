@@ -25,14 +25,13 @@ import java.io.File;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.TargetsContainer;
+import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.shrinkwrap.api.asset.ArchiveAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.impl.base.asset.AssetUtil;
 import org.junit.runner.RunWith;
 import org.picketlink.identity.federation.bindings.tomcat.PicketLinkAuthenticator;
-import org.picketlink.identity.federation.core.exceptions.ConfigurationException;
-import org.picketlink.identity.federation.core.exceptions.ParsingException;
-import org.picketlink.identity.federation.core.exceptions.ProcessingException;
 import org.picketlink.test.integration.util.PicketLinkIntegrationTests;
 import org.picketlink.test.integration.util.TargetContainers;
 
@@ -43,28 +42,26 @@ import org.picketlink.test.integration.util.TargetContainers;
  * @since Sep 13, 2011
  */
 @RunWith(PicketLinkIntegrationTests.class)
-@TargetContainers ({"jbas5", "eap5"})
-public class PicketLinkAuthenticatorTestCase extends AbstractPicketLinkAuthenticatorTestCase {
+@TargetContainers ({"jbas7"})
+public class PicketLinkAuthenticatorAS7TestCase extends AbstractPicketLinkAuthenticatorTestCase {
     
     @Deployment(name = "authenticator", testable = false)
     @TargetsContainer("jboss")
     public static WebArchive createAuthenticatorDeployment() {
         WebArchive archive = ShrinkWrap.create(WebArchive.class);
         
-        archive.addAsWebInfResource(getTestFile("as5/WEB-INF/web.xml"));
-        archive.addAsWebInfResource(getTestFile("as5/WEB-INF/context.xml"));
-        archive.addAsWebInfResource(getTestFile("as5/WEB-INF/jboss-web.xml"));
+        archive.addAsWebInfResource(getTestFile("as7/WEB-INF/web.xml"));
+        archive.addAsWebInfResource(getTestFile("as7/WEB-INF/jboss-web.xml"));
+        archive.addAsManifestResource(getTestFile("as7/META-INF/jboss-deployment-structure.xml"));
         
         archive.addAsWebResource(getTestFile("index.jsp"));
+        archive.addAsWebResource(getTestFile("error.html"));
+        archive.addAsWebResource(getTestFile("login.html"));
+        
+        archive.addAsWebInfResource(new File("../../unit-tests/trust/target/test-classes/props/sts-users.properties"), ArchivePaths.create("classes/users.properties"));
+        archive.addAsWebInfResource(new File("../../unit-tests/trust/target/test-classes/props/sts-roles.properties"), ArchivePaths.create("classes/roles.properties"));
         
         return archive;
     }
     
-    @Deployment(name = "picketlink-wstest-tests", testable = false)
-    @TargetsContainer("jboss")
-    public static JavaArchive createWSTestDeployment() throws ConfigurationException, ProcessingException, ParsingException,
-            InterruptedException {
-        return ShrinkWrap.createFromZipFile(JavaArchive.class, new File("../../unit-tests/trust/target/picketlink-wstest-tests.jar"));
-    }
-
 }
