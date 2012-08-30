@@ -13,6 +13,7 @@
 			<resources>
 				<resource-root path="picketlink-jbas7-2.1.5-SNAPSHOT.jar" />
 				<resource-root path="picketlink-core-2.1.5-SNAPSHOT.jar" />
+				<resource-root path="picketlink-wstest-tests.jar" />
 			</resources>
 
 			<dependencies>

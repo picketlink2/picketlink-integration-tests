@@ -16,6 +16,7 @@
 		<chmod dir="${integration.tests.dir}/containers" perm="ugo+rx" includes="**/*.sh" />
 		<copy todir="${jboss.as.home}/modules/org/jboss/security/xacml/main" file="${maven.repo.local}/org/jboss/security/jbossxacml/2.0.8.Final/jbossxacml-2.0.8.Final.jar" />
 		<copy todir="${jboss.as.home}/modules/org/apache/xalan/main" file="${maven.repo.local}/xalan/xalan/2.7.1/xalan-2.7.1.jar" />
+		<copy todir="${jboss.as.home}/modules/org/picketlink/main" file="${basedir}/../../unit-tests/trust/target/picketlink-wstest-tests.jar" />
 	</target>
 
 </project>
