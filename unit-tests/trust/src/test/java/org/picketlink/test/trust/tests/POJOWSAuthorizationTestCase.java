@@ -21,113 +21,35 @@
  */
 package org.picketlink.test.trust.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import java.io.File;
 
-import java.net.URL;
-import java.util.List;
-
-import javax.xml.namespace.QName;
-import javax.xml.ws.BindingProvider;
-import javax.xml.ws.Service;
-import javax.xml.ws.handler.Handler;
-import javax.xml.ws.soap.SOAPFaultException;
-
-import org.junit.Test;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.api.TargetsContainer;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.runner.RunWith;
+import org.picketlink.identity.federation.core.exceptions.ConfigurationException;
+import org.picketlink.identity.federation.core.exceptions.ParsingException;
+import org.picketlink.identity.federation.core.exceptions.ProcessingException;
 import org.picketlink.test.integration.util.PicketLinkIntegrationTests;
 import org.picketlink.test.integration.util.TargetContainers;
-import org.picketlink.test.trust.ws.WSTest;
-import org.picketlink.trust.jbossws.SAML2Constants;
-import org.picketlink.trust.jbossws.handler.SAML2Handler;
-import org.w3c.dom.Element;
 
 /**
  * A Simple WS Test for POJO WS Authorization using PicketLink
+ * 
  * @author Anil Saldhana
  * @since Oct 3, 2010
  */
-@RunWith (PicketLinkIntegrationTests.class)
-@TargetContainers ({"jbas5", "eap5"})
-public class POJOWSAuthorizationTestCase extends TrustTestsBase
-{  
-   @SuppressWarnings("rawtypes")
-   @Test
-   public void testWSInteraction() throws Exception 
-   {
-      Element assertion = getAssertionFromSTS("UserA", "PassA");
+@RunWith(PicketLinkIntegrationTests.class)
+@TargetContainers({ "jbas5", "eap5"})
+public class POJOWSAuthorizationTestCase extends AbstractPOJOWSAuthorizationTestCase {
 
-      // Step 2: Stuff the Assertion on the SOAP message context and add the SAML2Handler to client side handlers
-      URL wsdl = new URL("http://" + System.getProperty("test.hosts.bind.address", "localhost") + ":" + System.getProperty("test.server.port", "28080")
-            + "/pojo-test/POJOBeanService?wsdl");
-      QName serviceName = new QName("http://ws.trust.test.picketlink.org/", "POJOBeanService");
-      Service service = Service.create(wsdl, serviceName);
-      WSTest port = service.getPort(new QName("http://ws.trust.test.picketlink.org/", "POJOBeanPort"), WSTest.class);
-      BindingProvider bp = (BindingProvider)port;
-      bp.getRequestContext().put(SAML2Constants.SAML2_ASSERTION_PROPERTY, assertion);
-      List<Handler> handlers = bp.getBinding().getHandlerChain();
-      handlers.add(new SAML2Handler());
-      bp.getBinding().setHandlerChain(handlers); 
-
-      //Step 3: Access the WS. Exceptions will be thrown anyway.
-      assertEquals( "Test", port.echo("Test"));
-   }
-   
-   
-   @SuppressWarnings("rawtypes")
-   @Test
-   public void testWSAccessDeniedInteraction() throws Exception 
-   {
-      Element assertion = getAssertionFromSTS("UserB", "PassB");
-
-      // Step 2: Stuff the Assertion on the SOAP message context and add the SAML2Handler to client side handlers
-      URL wsdl = new URL("http://" + System.getProperty("test.hosts.bind.address", "localhost") + ":" + System.getProperty("test.server.port", "28080")
-            + "/pojo-test/POJOBeanService?wsdl");
-      QName serviceName = new QName("http://ws.trust.test.picketlink.org/", "POJOBeanService");
-      Service service = Service.create(wsdl, serviceName);
-      WSTest port = service.getPort(new QName("http://ws.trust.test.picketlink.org/", "POJOBeanPort"), WSTest.class);
-      BindingProvider bp = (BindingProvider)port;
-      bp.getRequestContext().put(SAML2Constants.SAML2_ASSERTION_PROPERTY, assertion);
-      List<Handler> handlers = bp.getBinding().getHandlerChain();
-      handlers.add(new SAML2Handler());
-      bp.getBinding().setHandlerChain(handlers); 
-      
-      try
-      {
-         port.echo("Test");
-         fail( "Should have thrown exception");
-      }
-      catch( Exception e)
-      {
-         if(e instanceof SOAPFaultException)
-         {
-            //pass
-
-         }
-         else
-            fail( "Wrong Exception:"+e);      
-      }
-   }
-   
-   @SuppressWarnings("rawtypes")
-   @Test
-   public void testWSUncheckedInteraction() throws Exception 
-   {
-      Element assertion = getAssertionFromSTS("UserB", "PassB");
-      
-      // Step 2: Stuff the Assertion on the SOAP message context and add the SAML2Handler to client side handlers
-      URL wsdl = new URL("http://" + System.getProperty("test.hosts.bind.address", "localhost") + ":" + System.getProperty("test.server.port", "28080")
-            + "/pojo-test/POJOBeanService?wsdl");
-      QName serviceName = new QName("http://ws.trust.test.picketlink.org/", "POJOBeanService");
-      Service service = Service.create(wsdl, serviceName);
-      WSTest port = service.getPort(new QName("http://ws.trust.test.picketlink.org/", "POJOBeanPort"), WSTest.class);
-      BindingProvider bp = (BindingProvider)port;
-      bp.getRequestContext().put(SAML2Constants.SAML2_ASSERTION_PROPERTY, assertion);
-      List<Handler> handlers = bp.getBinding().getHandlerChain();
-      handlers.add(new SAML2Handler());
-      bp.getBinding().setHandlerChain(handlers); 
-
-      //Step 3: Access the WS. Exceptions will be thrown anyway.
-      assertEquals( "Test", port.echoUnchecked("Test"));
-   }
+    @Deployment(name = "picketlink-wstest-tests", testable = false)
+    @TargetsContainer("jboss")
+    public static JavaArchive createWSTestDeployment() throws ConfigurationException, ProcessingException, ParsingException,
+            InterruptedException {
+        return ShrinkWrap.createFromZipFile(JavaArchive.class, new File(
+                "../../unit-tests/trust/target/picketlink-wstest-tests.jar"));
+    }
+    
 }
