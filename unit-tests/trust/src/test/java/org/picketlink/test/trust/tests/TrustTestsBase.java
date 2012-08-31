@@ -25,26 +25,19 @@ import static org.picketlink.test.integration.util.PicketLinkConfigurationUtil.a
 import static org.picketlink.test.integration.util.PicketLinkConfigurationUtil.addValidatingAlias;
 import static org.picketlink.test.integration.util.TestUtil.getServerAddress;
 
-import java.io.File;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.TargetsContainer;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.runner.RunWith;
 import org.picketlink.identity.federation.api.wstrust.WSTrustClient;
 import org.picketlink.identity.federation.api.wstrust.WSTrustClient.SecurityInfo;
-import org.picketlink.identity.federation.core.exceptions.ConfigurationException;
-import org.picketlink.identity.federation.core.exceptions.ParsingException;
-import org.picketlink.identity.federation.core.exceptions.ProcessingException;
 import org.picketlink.identity.federation.core.wstrust.WSTrustException;
 import org.picketlink.identity.federation.core.wstrust.plugins.saml.SAMLUtil;
 import org.picketlink.test.integration.util.MavenArtifactUtil;
 import org.picketlink.test.integration.util.PicketLinkIntegrationTests;
-import org.picketlink.test.integration.util.TargetContainers;
 import org.picketlink.test.integration.util.TestUtil;
 import org.w3c.dom.Element;
 
@@ -55,8 +48,7 @@ import org.w3c.dom.Element;
  * @since Apr 18, 2011
  */
 @RunWith(PicketLinkIntegrationTests.class)
-@TargetContainers ({"jbas5", "eap5"})
-public class TrustTestsBase {
+public abstract class TrustTestsBase {
     
     @Deployment(name = "picketlink-sts", testable = false)
     @TargetsContainer("jboss")
@@ -67,14 +59,6 @@ public class TrustTestsBase {
         addKeyStoreAlias(sts, "/WEB-INF/classes/sts_keystore.jks", "sts", "testpass", getServerAddress());
         
         return sts;
-    }
-
-    @Deployment(name = "picketlink-wstest-tests", testable = false)
-    @TargetsContainer("jboss")
-    public static JavaArchive createWSTestDeployment() throws ConfigurationException, ProcessingException, ParsingException,
-            InterruptedException {
-        return ShrinkWrap.createFromZipFile(JavaArchive.class, new File(
-                "../../unit-tests/trust/target/picketlink-wstest-tests.jar"));
     }
 
     /**

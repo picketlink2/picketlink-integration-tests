@@ -40,6 +40,7 @@ import org.jboss.arquillian.container.test.api.TargetsContainer;
 import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.shrinkwrap.impl.base.exporter.zip.ZipExporterImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.picketlink.identity.federation.core.exceptions.ConfigurationException;
@@ -61,8 +62,8 @@ import org.picketlink.trust.jbossws.handler.BinaryTokenHandler;
  * @since Apr 5, 2011
  */
 @RunWith(PicketLinkIntegrationTests.class)
-@TargetContainers ({"jbas5", "eap5"})
-public class STSWSBinaryTokenTestCase {
+@TargetContainers ({"jbas7"})
+public class STSWSBinaryTokenAS7TestCase {
   
     @Deployment(name = "ws-binarybean.jar", testable = false)
     @TargetsContainer("jboss")
@@ -75,6 +76,7 @@ public class STSWSBinaryTokenTestCase {
         archive.addAsResource(new File("../../unit-tests/trust/target/test-classes/org/picketlink/test/trust/ws/WSTest.class"), ArchivePaths.create("org/picketlink/test/trust/ws/WSTest.class"));
         archive.addAsResource(new File("../../unit-tests/trust/target/test-classes/org/picketlink/test/trust/ws/handlers/TestBinaryHandler.class"), ArchivePaths.create("org/picketlink/test/trust/ws/handlers/TestBinaryHandler.class"));
         
+        archive.addAsManifestResource(new File("../../unit-tests/trust/target/test-classes/jboss-deployment-structure.xml"));
         archive.addAsResource(new File("../../unit-tests/trust/target/test-classes/props/sts-users.properties"), ArchivePaths.create("users.properties"));
         archive.addAsResource(new File("../../unit-tests/trust/target/test-classes/props/sts-roles.properties"), ArchivePaths.create("roles.properties"));
         

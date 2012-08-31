@@ -32,6 +32,9 @@
 				<module name="javax.xml.ws.api" />
 				<module name="org.apache.log4j" />
 				<module name="org.apache.santuario.xmlsec" />
+				<module name="org.jboss.ws.api" />
+				<module name="org.jboss.ws.spi" />
+				<module name="org.apache.cxf" />
 			</dependencies>
 		</module>
 	</xsl:template>

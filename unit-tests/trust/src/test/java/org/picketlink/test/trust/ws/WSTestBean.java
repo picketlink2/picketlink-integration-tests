@@ -49,7 +49,7 @@ public class WSTestBean implements WSTest
    WebServiceContext wsCtx;
 
    @WebMethod
-   public String echo(String echo) {
+   public String echo(String echo) {       
       System.out.println("WSTest: " + echo);
       System.out.println("Principal: " + wsCtx.getUserPrincipal());
       System.out.println("Principal.getName(): " + wsCtx.getUserPrincipal().getName());

@@ -1,0 +1,4 @@
+<jboss-web>
+  <security-domain>sts</security-domain>
+  <context-root>pojo-test</context-root>
+</jboss-web>
