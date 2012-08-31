@@ -4,7 +4,6 @@
     <!-- Add picketlink module dependency -->
     <dependencies>
       <module name="org.picketlink" />
-      <module name="org.jboss.ws.api" />
     </dependencies>
   </deployment>
 </jboss-deployment-structure>
