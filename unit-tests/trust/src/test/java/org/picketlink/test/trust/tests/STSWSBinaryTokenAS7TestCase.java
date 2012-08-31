@@ -61,9 +61,8 @@ import org.picketlink.trust.jbossws.handler.BinaryTokenHandler;
  * @author Anil.Saldhana@redhat.com
  * @since Apr 5, 2011
  */
-@RunWith(PicketLinkIntegrationTests.class)
 @TargetContainers ({"jbas7"})
-public class STSWSBinaryTokenAS7TestCase {
+public class STSWSBinaryTokenAS7TestCase extends AbstractSTSWSBinaryTokenTestCase {
   
     @Deployment(name = "ws-binarybean.jar", testable = false)
     @TargetsContainer("jboss")
@@ -118,36 +117,4 @@ public class STSWSBinaryTokenAS7TestCase {
         assertEquals("Test", port.echo("Test"));
     }
 
-    /**
-     * This test case does the following. - We set a Test HttpServletRequest on the soap message context. - We then inject the
-     * {@link BinaryTokenHandler} as a client side handler. - On the Server Side, we are hitting the {@link TestBean} which is
-     * guarded by the {@link TestBinaryHandler}
-     * 
-     * The WS has no security. The Server side {@link TestBinaryHandler} ensures that the call comes in with a
-     * BinarySecurityToken
-     * 
-     * @throws Exception
-     */
-    @Test
-    public void testWSLackOfBinaryHandlerInteraction() throws Exception {
-        System.setProperty("binary.http.header", "TEST_HEADER");
-
-        URL wsdl = new URL(TestUtil.getTargetURL("/ws-binarybean/TestBean?wsdl"));
-        QName serviceName = new QName("http://ws.trust.test.picketlink.org/", "TestBeanService");
-        Service service = Service.create(wsdl, serviceName);
-        WSTest port = service.getPort(new QName("http://ws.trust.test.picketlink.org/", "TestBeanPort"), WSTest.class);
-
-        TestServletRequest request = new TestServletRequest();
-        request.addHeader("TEST_HEADER", "ABCDEFGH");
-
-        try {
-            port.echo("Test");
-            fail("Should have thrown exception as we do not have binary handler injected");
-        } catch (Exception e) {
-            if (e instanceof WebServiceException) {
-                // pass
-            } else
-                fail("wrong exception:" + e);
-        }
-    }
 }
