@@ -31,6 +31,7 @@ import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPHeaderElement;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.handler.MessageContext;
+import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 
 import org.jboss.wsf.common.handler.GenericSOAPHandler;
@@ -39,63 +40,74 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * A Test {@link GenericSOAPHandler} that just verifies that the 
- * SOAP header has a wsse Binary Security Token before letting the call
- * go through.
+ * A Test {@link GenericSOAPHandler} that just verifies that the SOAP header has a wsse Binary Security Token before letting the
+ * call go through.
  * 
  * @author Anil.Saldhana@redhat.com
  * @since Apr 5, 2011
  */
 @SuppressWarnings("rawtypes")
-public class TestBinaryHandler extends GenericSOAPHandler
-{ 
-   private static Set<QName> headers;
+public class TestBinaryHandler implements SOAPHandler {
+    private static Set<QName> headers;
 
-   static
-   {
-      HashSet<QName> set = new HashSet<QName>();
-      set.add(Constants.WSSE_HEADER_QNAME);
-      headers = Collections.unmodifiableSet(set);
-   }
+    static {
+        HashSet<QName> set = new HashSet<QName>();
+        set.add(Constants.WSSE_HEADER_QNAME);
+        headers = Collections.unmodifiableSet(set);
+    }
 
-   public Set<QName> getHeaders()
-   {
-      //return a collection with just the wsse:Security header to pass the MustUnderstand check on it
-      return headers;
-   }
-   
-   @Override
-   protected boolean handleInbound(MessageContext msgContext)
-   { 
-      SOAPMessageContext soapMessageContext = (SOAPMessageContext) msgContext;
-      SOAPMessage soap = soapMessageContext.getMessage();
-      try
-      {
-         soap.writeTo(System.out);
-         SOAPHeader header = soap.getSOAPHeader(); 
-         Iterator iter = header.extractAllHeaderElements();
-         if( iter != null)
-         {
-            while(iter.hasNext())
+    public Set<QName> getHeaders() {
+        // return a collection with just the wsse:Security header to pass the MustUnderstand check on it
+        return headers;
+    }
+
+    public boolean handleMessage(MessageContext context) {
+        Boolean outbound = (Boolean) context.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
+        
+        if (outbound == null)
+           throw new IllegalStateException("Cannot obtain required property: " + MessageContext.MESSAGE_OUTBOUND_PROPERTY);
+        
+        if (!outbound) {
+            SOAPMessageContext soapMessageContext = (SOAPMessageContext) context;
+            SOAPMessage soap = soapMessageContext.getMessage();
+            
+            try
             {
-               SOAPHeaderElement headerEl = (SOAPHeaderElement) iter.next();
-               if(headerEl.getNodeName().contains(Constants.WSSE_LOCAL))
+               soap.writeTo(System.out);
+               SOAPHeader header = soap.getSOAPHeader(); 
+               Iterator iter = header.extractAllHeaderElements();
+               if( iter != null)
                {
-                  NodeList nl = headerEl.getChildNodes();
-                  for( int i = 0; i < nl.getLength(); i++)
+                  while(iter.hasNext())
                   {
-                     Node n = nl.item(i);
-                     if( n.getNodeName().contains(Constants.WSSE_BINARY_SECURITY_TOKEN))
-                        return true;
+                     SOAPHeaderElement headerEl = (SOAPHeaderElement) iter.next();
+                     if(headerEl.getNodeName().contains(Constants.WSSE_LOCAL))
+                     {
+                        NodeList nl = headerEl.getChildNodes();
+                        for( int i = 0; i < nl.getLength(); i++)
+                        {
+                           Node n = nl.item(i);
+                           if( n.getNodeName().contains(Constants.WSSE_BINARY_SECURITY_TOKEN))
+                              return true;
+                        }
+                     }
                   }
                }
             }
-         }
-      }
-      catch (Exception e)
-      { 
-         e.printStackTrace();
-      }  
-      return false;
-   }
+            catch (Exception e)
+            { 
+               e.printStackTrace();
+            }  
+        }
+
+        return false;        
+    }
+
+    public boolean handleFault(MessageContext context) {
+        return true;
+    }
+
+    public void close(MessageContext context) {
+
+    }
 }

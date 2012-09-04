@@ -28,9 +28,6 @@ import org.jboss.arquillian.container.test.api.TargetsContainer;
 import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.picketlink.identity.federation.core.exceptions.ConfigurationException;
-import org.picketlink.identity.federation.core.exceptions.ParsingException;
-import org.picketlink.identity.federation.core.exceptions.ProcessingException;
 import org.picketlink.test.integration.util.TargetContainers;
 
 /**
@@ -40,21 +37,21 @@ import org.picketlink.test.integration.util.TargetContainers;
  * @author Anil Saldhana
  * @since Oct 3, 2010
  */
-@TargetContainers ({"jbas5", "eap5"})
-public class STSWSClientTestCase extends AbstractSTSWSClientTestCase {
+@TargetContainers ({"jbas7"})
+public class STSWSClientAS7TestCase extends AbstractSTSWSClientTestCase {
     
     @Deployment(name = "ws-testbean", testable = false)
     @TargetsContainer("jboss")
-    public static JavaArchive createWSTestDeployment() throws ConfigurationException, ProcessingException, ParsingException,
-            InterruptedException {
+    public static JavaArchive createWSTestDeployment() {
         JavaArchive archive = ShrinkWrap.create(JavaArchive.class, "ws-testbean.jar");
         
         archive.addAsResource(new File("../../unit-tests/trust/target/test-classes/handlers.xml"));
         archive.addAsResource(new File("../../unit-tests/trust/target/test-classes/org/picketlink/test/trust/ws/WSTestBean.class"), ArchivePaths.create("org/picketlink/test/trust/ws/WSTestBean.class"));
-        archive.addAsResource(new File("../../unit-tests/trust/target/test-classes/org/picketlink/test/trust/ws/WSTest.class"), ArchivePaths.create("org/picketlink/test/trust/ws/WSTest.class"));
+        archive.addAsManifestResource(new File("../../unit-tests/trust/target/test-classes/jboss-deployment-structure.xml"));
         
         archive.addAsResource(new File("../../unit-tests/trust/target/test-classes/props/sts-users.properties"), ArchivePaths.create("users.properties"));
         archive.addAsResource(new File("../../unit-tests/trust/target/test-classes/props/sts-roles.properties"), ArchivePaths.create("roles.properties"));
+        archive.addAsResource(new File("../../unit-tests/trust/target/test-classes/props/sts-config.properties"), ArchivePaths.create("sts-config.properties"));
         
         return archive;
     }

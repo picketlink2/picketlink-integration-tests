@@ -31,6 +31,10 @@
 					<groupId>trove</groupId>
 					<artifactId>trove</artifactId>
 				</exclusion>
+				<exclusion>
+					<artifactId>jboss-logging-spi</artifactId>
+					<groupId>org.jboss.logging</groupId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -111,6 +115,26 @@
 					<artifactId>jaas</artifactId>
 					<groupId>javax.security</groupId>
 				</exclusion>
+				<exclusion>
+					<artifactId>jboss-logging-spi</artifactId>
+					<groupId>org.jboss.logging</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jbossws-spi</artifactId>
+					<groupId>org.jboss.ws</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jbossws-native-factories</artifactId>
+					<groupId>org.jboss.ws.native</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jbossws-native-core</artifactId>
+					<groupId>org.jboss.ws.native</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jbossws-framework</artifactId>
+					<groupId>org.jboss.ws</groupId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -130,6 +154,12 @@
 			<artifactId>picketlink-jbas5-single</artifactId>
 			<version>${version.picketlink}</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>jbossws-spi</artifactId>
+					<groupId>org.jboss.ws</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 

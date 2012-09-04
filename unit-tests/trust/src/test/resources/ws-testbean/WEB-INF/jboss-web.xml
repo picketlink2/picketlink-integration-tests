@@ -1,0 +1,4 @@
+<jboss-web>
+  <security-domain>sts</security-domain>
+  <context-root>picketlink-wstest-tests</context-root>
+</jboss-web>

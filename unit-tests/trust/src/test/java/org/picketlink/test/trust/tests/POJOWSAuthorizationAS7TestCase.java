@@ -29,37 +29,36 @@ import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.runner.RunWith;
-import org.picketlink.identity.federation.bindings.tomcat.PicketLinkAuthenticator;
 import org.picketlink.test.integration.util.PicketLinkIntegrationTests;
 import org.picketlink.test.integration.util.TargetContainers;
 
 /**
- * Test the {@link PicketLinkAuthenticator}
+ * A Simple WS Test for POJO WS Authorization using PicketLink
  * 
- * @author Anil.Saldhana@redhat.com
- * @since Sep 13, 2011
+ * @author Anil Saldhana
+ * @since Oct 3, 2010
  */
 @RunWith(PicketLinkIntegrationTests.class)
-@TargetContainers ({"jbas7"})
-public class PicketLinkAuthenticatorAS7TestCase extends AbstractPicketLinkAuthenticatorTestCase {
-    
-    @Deployment(name = "authenticator", testable = false)
+@TargetContainers({"jbas7"})
+public class POJOWSAuthorizationAS7TestCase extends AbstractPOJOWSAuthorizationTestCase {
+
+    @Deployment(name = "pojo-test", testable = false)
     @TargetsContainer("jboss")
-    public static WebArchive createAuthenticatorDeployment() {
+    public static WebArchive createWSTestDeployment() {
         WebArchive archive = ShrinkWrap.create(WebArchive.class);
         
-        archive.addAsWebInfResource(getTestFile("as7/WEB-INF/web.xml"));
-        archive.addAsWebInfResource(getTestFile("as7/WEB-INF/jboss-web.xml"));
+        archive.addAsWebInfResource(new File("../../unit-tests/trust/target/test-classes/pojo-test/WEB-INF/web.xml"));
+        archive.addAsWebInfResource(new File("../../unit-tests/trust/target/test-classes/pojo-test/WEB-INF/jboss-web.xml"));
+        archive.addAsWebInfResource(new File("../../unit-tests/trust/target/test-classes/pojo-test/WEB-INF/jboss-wsse.xml"));
+        archive.addAsWebInfResource(new File("../../unit-tests/trust/target/test-classes/authorize-handlers.xml"), ArchivePaths.create("classes/authorize-handlers.xml"));
+        archive.addAsWebInfResource(new File("../../unit-tests/trust/target/test-classes/org/picketlink/test/trust/ws/POJOBean.class"), ArchivePaths.create("classes/org/picketlink/test/trust/ws/POJOBean.class"));
         archive.addAsManifestResource(new File("../../unit-tests/trust/target/test-classes/jboss-deployment-structure.xml"));
-        
-        archive.addAsWebResource(getTestFile("index.jsp"));
-        archive.addAsWebResource(getTestFile("error.html"));
-        archive.addAsWebResource(getTestFile("login.html"));
         
         archive.addAsWebInfResource(new File("../../unit-tests/trust/target/test-classes/props/sts-users.properties"), ArchivePaths.create("classes/users.properties"));
         archive.addAsWebInfResource(new File("../../unit-tests/trust/target/test-classes/props/sts-roles.properties"), ArchivePaths.create("classes/roles.properties"));
-        
+        archive.addAsWebInfResource(new File("../../unit-tests/trust/target/test-classes/props/sts-config.properties"), ArchivePaths.create("classes/sts-config.properties"));
+
         return archive;
     }
-    
+
 }

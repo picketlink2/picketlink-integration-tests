@@ -38,10 +38,23 @@
 			</security-domain>
 			<security-domain name="authenticator" cache-type="default">
                 <authentication>
-                    <login-module code="org.picketlink.identity.federation.bindings.jboss.auth.TestRequestUserLoginModule" flag="required">
+                    <login-module code="org.picketlink.test.trust.loginmodules.TestRequestUserLoginModule" flag="required">
                         <module-option name="usersProperties" value="users.properties"/>
                         <module-option name="rolesProperties" value="roles.properties"/>
                     </login-module>
+                </authentication>
+            </security-domain>
+            <security-domain name="sts" cache-type="default">
+                <authentication>
+			         <login-module code="org.picketlink.identity.federation.bindings.jboss.auth.SAML2STSLoginModule" flag="required">
+			            <module-option name="configFile" value="sts-config.properties"/>
+			            <module-option name="password-stacking" value="useFirstPass"/>
+			         </login-module>
+			         <login-module code="UsersRoles" flag="required">
+			            <module-option name="usersProperties" value="users.properties"/>
+			            <module-option name="rolesProperties" value="roles.properties"/>
+			            <module-option name="password-stacking" value="useFirstPass"/>
+			         </login-module>
                 </authentication>
             </security-domain>
 			<xsl:apply-templates select="@* | *" />

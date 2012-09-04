@@ -107,8 +107,10 @@
 					<finalName>picketlink-wstest</finalName>
 					<excludes>
 						<exclude>**/WEB-INF/**</exclude>
+						<exclude>**/POJOBean*</exclude>
+						<exclude>**/WSTestBean*</exclude>
+						<exclude>**/TestBean*</exclude>
 						<exclude>**/*jboss-beans.xml</exclude>
-						<exclude>**/POJO*</exclude>
 						<exclude>**/author*</exclude>
 					</excludes>
 				</configuration>
@@ -143,6 +145,12 @@
 		<dependency>
 			<groupId>org.picketlink</groupId>
 			<artifactId>picketlink-jbas5-single</artifactId>
+			<version>${version.picketlink}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.picketlink</groupId>
+			<artifactId>picketlink-jbas7-single</artifactId>
 			<version>${version.picketlink}</version>
 			<scope>test</scope>
 		</dependency>
