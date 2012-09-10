@@ -15,7 +15,11 @@
 <!--
 		<picketlink.dist.dir>${integration.tests.containers.dir}/jboss-eap-5.2/picketlink/picketlink-federation</picketlink.dist.dir>
 -->
-		<jboss.as.home>${integration.tests.containers.dir}/jboss-eap-5.2/jboss-as</jboss.as.home>
+		<!-- property redefinition for ant-run with external build script -->
+		<eap5-dist-zip>${eap5-dist-zip}</eap5-dist-zip>
+		<eap5-dir-structure>${eap5-dir-structure}</eap5-dir-structure>
+		<!-- newly defined properties -->
+		<jboss.as.home>${integration.tests.containers.dir}/${eap5-dir-structure}</jboss.as.home>
 		<jboss.as.picketlink.lib.dir>${jboss.as.home}/common/lib</jboss.as.picketlink.lib.dir>
 	</properties>
 

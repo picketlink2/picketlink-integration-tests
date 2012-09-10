@@ -51,6 +51,7 @@ import org.picketlink.identity.federation.core.saml.v2.util.DocumentUtil;
 import org.picketlink.identity.federation.core.util.KeyStoreUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /**
  * @author <a href="mailto:psilva@redhat.com">Pedro Silva</a>
@@ -220,6 +221,41 @@ public class PicketLinkConfigurationUtil {
         overridePicketLinkConfig(webArchive, picketlink, document);
     }
 
+    /**
+     * Add AttributeProvider to picketlink-sts.xml config.
+     * Useful when you need pick roles from SAMLIssuingLoginModule later in SAMLRolesLoginModule.
+     * 
+     * @param webArchive
+     * @param configFile
+     * @param tokenRoleAttributeName
+     */
+    public static void addSAML20TokenRoleAttributeProvider(WebArchive webArchive, String configFile, String tokenRoleAttributeName) {
+        final Node picketlink = getContent(webArchive, configFile);
+        final Document document = getPicketLinkConfigDocument(picketlink);
+
+        Element element = DocumentUtil.getElement(document, new QName("TokenProviders"));
+        NodeList nl = element.getElementsByTagName("TokenProvider");
+        for (int i = 0; i < nl.getLength(); i++) {
+            Element e = (Element) nl.item(i);
+            if (e.getNodeName().equals("TokenProvider") 
+                    && e.getAttribute("ProviderClass").equals("org.picketlink.identity.federation.core.wstrust.plugins.saml.SAML20TokenProvider")
+                    && e.getAttribute("TokenElement").equals("Assertion")) {
+                
+                Element prop1 = document.createElement("Property");
+                prop1.setAttribute("Key", "AttributeProvider");
+                prop1.setAttribute("Value", "org.picketlink.identity.federation.bindings.jboss.auth.SAML20TokenRoleAttributeProvider");
+                Element prop2 = document.createElement("Property");
+                prop2.setAttribute("Key", "org.picketlink.identity.federation.bindings.jboss.auth.SAML20TokenRoleAttributeProvider.tokenRoleAttributeName");
+                prop2.setAttribute("Value", tokenRoleAttributeName); // default "Role"
+                
+                e.appendChild(prop1);
+                e.appendChild(prop2);
+                break;
+            }
+        }
+        overridePicketLinkConfig(webArchive, picketlink, document);
+    }
+    
     private static Document getPicketLinkConfigDocument(final Node picketlink) {
         final Document document;
 

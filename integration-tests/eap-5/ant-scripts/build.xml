@@ -20,6 +20,7 @@
 		<copy file="${basedir}/../../unit-tests/trust/target/pojo-test.war" todir="${JBAS5_DEPLOY}/picketlink" />
 		<copy file="${basedir}/../../unit-tests/trust/src/test/resources/props/sts-users.properties" todir="${JBAS5_DEPLOY}/../conf" />
 		<copy file="${basedir}/../../unit-tests/trust/src/test/resources/props/sts-roles.properties" todir="${JBAS5_DEPLOY}/../conf" />
+		<copy file="${basedir}/../../unit-tests/trust/src/test/resources/lmtestapp/gateway2service-http/localValidationDomainKeyStore/stspub.jks" todir="${JBAS5_DEPLOY}/../conf" />
 	</target>
 
 	<target name="slimming-jboss">

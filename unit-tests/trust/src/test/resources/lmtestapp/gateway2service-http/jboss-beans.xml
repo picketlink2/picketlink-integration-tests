@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deployment xmlns="urn:jboss:bean-deployer:2.0">
+
+   <!-- GATEWAY application policy -->
+   <application-policy xmlns="urn:jboss:security-beans:1.0" name="gateway">
+      <authentication>
+         <!-- dummy login module for test purposes --> 
+         <login-module code="org.picketlink.test.trust.loginmodules.TokenSupplierTestLoginModule" flag="required">
+            <module-option name="map.token.key">ClientID</module-option>
+            <module-option name="ClientID">test-token-value:g2s-http</module-option>
+            <module-option name="password-stacking">useFirstPass</module-option>
+         </login-module>
+         <!-- this LM will pick ClientID value supplied by previous LM and construct specific ws-trust request to ge tsecurity token -->
+         <login-module code="org.picketlink.trust.jbossws.jaas.JBWSTokenIssuingLoginModule" flag="required">
+            <module-option name="endpointAddress">http://${jboss.bind.address}:8080/picketlink-sts/PicketLinkSTS</module-option>
+            <module-option name="serviceName">PicketLinkSTS</module-option>
+            <module-option name="portName">PicketLinkSTSPort</module-option>
+            <module-option name="inject.callerprincipal">true</module-option>
+			<module-option name="map.token.key">ClientID</module-option>
+            <module-option name="requestType">http://docs.oasis-open.org/ws-sx/ws-trust/200512/Validate</module-option>
+            <module-option name="soapBinding">http://www.w3.org/2003/05/soap/bindings/HTTP/</module-option>
+            <module-option name="isBatch">false</module-option>
+
+            <module-option name="wspAppliesTo">http://services.testcorp.org/provider1</module-option>
+            <module-option name="wsaIssuer">http://services.testcorp.org/provider1</module-option>
+            <module-option name="roleKey">Membership</module-option>
+
+            <module-option name="username">UserA</module-option>
+            <module-option name="password">PassA</module-option>
+         </login-module>
+         <login-module code="org.picketlink.trust.jbossws.jaas.SAMLRoleLoginModule" flag="required"/>
+      </authentication>
+   </application-policy>
+
+   <!--  SERVICE application policy -->
+   <application-policy xmlns="urn:jboss:security-beans:1.0" name="service">
+      <authentication>
+         <login-module code="org.picketlink.identity.federation.bindings.jboss.auth.SAML2STSLoginModule" flag="required">
+            <module-option name="password-stacking">useFirstPass</module-option>
+            <module-option name="cache.invalidation">true</module-option>
+            <module-option name="localValidation">true</module-option>
+            <module-option name="localValidationSecurityDomain">java:jaas/localValidationDomain</module-option>
+            <module-option name="tokenEncodingType">gzip</module-option>
+            <module-option name="samlTokenHttpHeader">Auth</module-option>
+            <module-option name="samlTokenHttpHeaderRegEx">.*"(.*)".*</module-option>
+            <module-option name="samlTokenHttpHeaderRegExGroup">1</module-option>
+         </login-module>
+         <login-module code="org.picketlink.trust.jbossws.jaas.SAMLRoleLoginModule" flag="required"/>
+      </authentication>
+   </application-policy>
+   
+   <!-- localValidationDomain bean -->
+   <bean name="LocalValidationBean" class="org.jboss.security.plugins.JaasSecurityDomain">
+     <constructor>
+          <parameter>localValidationDomain</parameter>
+     </constructor>
+     <property name="keyStoreURL">file://${jboss.server.home.dir}/conf/stspub.jks</property>
+     <property name="keyStorePass">keypass</property>
+     <property name="keyStoreAlias">sts</property>
+     <property name="securityManagement"><inject bean="JNDIBasedSecurityManagement"/></property>
+   </bean>
+   
+</deployment>
