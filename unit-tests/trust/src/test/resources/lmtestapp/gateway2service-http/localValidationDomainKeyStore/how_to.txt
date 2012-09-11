@@ -1,0 +1,5 @@
+This stspub.jks has been created from sts.jks used in picketlink-sts.war and store password 
+has been changed to "keypass".
+For security domains with keystores, the password for the store and for the key has to be 
+the same.
+Otherwise org.jboss.security.plugins.JaasSecurityDomain is not able to use public key.

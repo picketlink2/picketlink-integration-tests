@@ -1,0 +1,4 @@
+<jboss-web>
+  <context-root>/gateway</context-root>
+  <security-domain>gateway</security-domain>
+</jboss-web>
