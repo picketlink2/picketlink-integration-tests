@@ -26,6 +26,7 @@
 		<version.arquillian_drone>1.0.0.CR4</version.arquillian_drone>
 		<version.junit>4.8.1</version.junit>
 		<eap5-dist-zip>jboss-eap-noauth-5.2.0.zip</eap5-dist-zip>
+		<eap5-dir-structure>jboss-eap-5.2/jboss-as</eap5-dir-structure>
 	</properties>
 
 	<dependencyManagement>
@@ -108,6 +109,7 @@
 			<artifactId>jboss-logging</artifactId>
 			<version>3.1.1.GA</version>
 		</dependency>
+		
 		<dependency>
     		<groupId>org.apache.httpcomponents</groupId>
     		<artifactId>httpclient</artifactId>
