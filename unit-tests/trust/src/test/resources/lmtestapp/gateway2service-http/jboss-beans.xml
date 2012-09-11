@@ -17,7 +17,8 @@
             <module-option name="portName">PicketLinkSTSPort</module-option>
             <module-option name="inject.callerprincipal">true</module-option>
 			<module-option name="map.token.key">ClientID</module-option>
-            <module-option name="requestType">http://docs.oasis-open.org/ws-sx/ws-trust/200512/Validate</module-option>
+            <!--  use default value
+            module-option name="requestType">http://docs.oasis-open.org/ws-sx/ws-trust/200512/Validate</module-option -->
             <module-option name="soapBinding">http://www.w3.org/2003/05/soap/bindings/HTTP/</module-option>
             <module-option name="isBatch">false</module-option>
 

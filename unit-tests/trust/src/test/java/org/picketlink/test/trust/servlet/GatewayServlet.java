@@ -133,16 +133,14 @@ public class GatewayServlet extends HttpServlet {
             log.debug("Response: " + response.getStatusLine());
             HttpEntity entity = response.getEntity();
 
-            if (entity.getContentLength() > 0) {
-                ByteArrayOutputStream baos = new ByteArrayOutputStream((int) entity.getContentLength());
-                entity.writeTo(baos);
-                baos.close();
-                resp.getOutputStream().write(baos.toByteArray());
-            }
-            else {
-                resp.getWriter().println("No response from " + serviceServerUrl);
-            }
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            entity.writeTo(baos);
+            baos.close();
+            resp.getOutputStream().write(baos.toByteArray());
    
+        }
+        catch (Exception e) {
+            e.printStackTrace(resp.getWriter());
         }
         finally {
             httpclient.getConnectionManager().shutdown();

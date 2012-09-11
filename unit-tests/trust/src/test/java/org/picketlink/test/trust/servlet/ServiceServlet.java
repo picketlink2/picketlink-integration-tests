@@ -46,7 +46,7 @@ public class ServiceServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         PrintWriter out = resp.getWriter();
-        out.println("Authentication=Success");
+        out.println("ServiceAuthentication=Success");
         out.println("ClassName="+this.getClass().getName());
         out.println("--------------------------------------");
 

@@ -73,7 +73,7 @@ import org.picketlink.test.trust.servlet.ServiceServlet;
  */
 
 @RunWith(PicketLinkIntegrationTests.class)
-@TargetContainers({ "jbas5", "eap5" })
+@TargetContainers({ "eap5" })
 public class Gateway2ServiceHttpUnitTestCase extends TrustTestsBase {
 
     private static final Logger log = Logger.getLogger(Gateway2ServiceHttpUnitTestCase.class);
@@ -95,7 +95,7 @@ public class Gateway2ServiceHttpUnitTestCase extends TrustTestsBase {
         
         String content = getContentFromApp(appUri, userName, password);
 
-        assertTrue("Request not authenticated.", content.indexOf("Authentication=Success") > -1);
+        assertTrue("Request not authenticated.", content.indexOf("GatewayAuthentication=Success") > -1);
 
         boolean samlCredPresentOnSubject = samlCredentialPresense(content);
         assertTrue("SamlCredential on subject is missing for (" + appUri + ")", samlCredPresentOnSubject);
@@ -106,7 +106,8 @@ public class Gateway2ServiceHttpUnitTestCase extends TrustTestsBase {
 
         String content = getContentFromApp(appUri, userName, password);
 
-        assertTrue("Request not authenticated.", content.indexOf("Authentication=Success") > -1);
+        log.debug("Service content="+content);
+        assertTrue("Request not authenticated.", content.indexOf("ServiceAuthentication=Success") > -1);
         assertTrue("Response has to be from ServiceServlet.",
                 content.indexOf("ClassName=" + ServiceServlet.class.getName()) > -1);
 
@@ -140,7 +141,7 @@ public class Gateway2ServiceHttpUnitTestCase extends TrustTestsBase {
             HttpEntity entity = response.getEntity();
             log.debug("Status line: " + response.getStatusLine());
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream((int) entity.getContentLength());
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
             entity.writeTo(baos);
             content = baos.toString();
             baos.close();
