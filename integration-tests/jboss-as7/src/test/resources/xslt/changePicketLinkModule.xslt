@@ -11,8 +11,8 @@
 	<xsl:template match="/">
 		<module xmlns="urn:jboss:module:1.1" name="org.picketlink">
 			<resources>
-				<resource-root path="picketlink-jbas7-2.1.5-SNAPSHOT.jar" />
-				<resource-root path="picketlink-core-2.1.5-SNAPSHOT.jar" />
+				<resource-root path="picketlink-jbas7-2.1.6-SNAPSHOT.jar" />
+				<resource-root path="picketlink-core-2.1.6-SNAPSHOT.jar" />
 				<resource-root path="picketlink-wstest-tests.jar" />
 			</resources>
 
