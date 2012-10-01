@@ -51,8 +51,7 @@ public class MavenArtifactUtil {
      */
     public static WebArchive getQuickstartsMavenArchive(String artifactId) {
         WebArchive artifact = getMavenArchiveResolver()
-                .artifact("org.picketlink.quickstarts:" + artifactId + ":war:" + System.getProperty("binding") + ":" + System.getProperty("version.picketlink"))
-                .goOffline().resolveAs(WebArchive.class).iterator().next();
+                .artifact("org.picketlink.quickstarts:" + artifactId + ":war:" + System.getProperty("binding") + ":" + System.getProperty("version.picketlink")).resolveAs(WebArchive.class).iterator().next();
         
         return renameArtifact(artifactId, artifact);
     }
