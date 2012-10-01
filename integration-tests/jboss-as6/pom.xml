@@ -135,6 +135,10 @@
 					<artifactId>jbossws-framework</artifactId>
 					<groupId>org.jboss.ws</groupId>
 				</exclusion>
+				<exclusion>
+					<artifactId>jaxb-api</artifactId>
+					<groupId>sun-jaxb</groupId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
