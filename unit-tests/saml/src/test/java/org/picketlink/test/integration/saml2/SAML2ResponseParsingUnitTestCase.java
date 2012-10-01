@@ -65,7 +65,7 @@ public class SAML2ResponseParsingUnitTestCase extends AbstractSAMLIntegrationTes
     @Deployment(name = "claims", testable = false)
     @TargetsContainer("jboss")
     public static WebArchive createClaimsDeployment() {
-        WebArchive archive = ShrinkWrap.create(WebArchive.class);
+        WebArchive archive = ShrinkWrap.create(WebArchive.class, "claims.war");
         
         archive.addAsManifestResource(getTestFile("META-INF/jboss-deployment-structure.xml"));
         
