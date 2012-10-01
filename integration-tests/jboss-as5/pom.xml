@@ -33,6 +33,10 @@
 					<groupId>trove</groupId>
 					<artifactId>trove</artifactId>
 				</exclusion>
+				<exclusion>
+					<artifactId>cglib</artifactId>
+					<groupId>cglib</groupId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
