@@ -24,8 +24,11 @@ package org.picketlink.test.integration.saml2;
 import static org.junit.Assert.assertEquals;
 import static org.picketlink.test.integration.util.TestUtil.getTargetURL;
 
+import java.io.File;
+
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.TargetsContainer;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.picketlink.test.integration.util.MavenArtifactUtil;
@@ -62,7 +65,21 @@ public class SAML2ResponseParsingUnitTestCase extends AbstractSAMLIntegrationTes
     @Deployment(name = "claims", testable = false)
     @TargetsContainer("jboss")
     public static WebArchive createClaimsDeployment() {
-        return MavenArtifactUtil.getIntegrationMavenArchive("claims");
+        WebArchive archive = ShrinkWrap.create(WebArchive.class);
+        
+        archive.addAsManifestResource(getTestFile("META-INF/jboss-deployment-structure.xml"));
+        
+        archive.addAsWebInfResource(getTestFile("WEB-INF/web.xml"));
+        archive.addAsWebInfResource(getTestFile("WEB-INF/jboss-web.xml"));
+        
+        archive.addAsWebResource(getTestFile("claimsprocess.jsp"));
+        archive.addAsWebResource(getTestFile("saml2-response-adfs-claims.xml"));
+
+        return archive;
+    }
+    
+    protected static File getTestFile(String path) {
+        return new File("../../unit-tests/saml/target/test-classes/claims/" + path);
     }
 
 }
