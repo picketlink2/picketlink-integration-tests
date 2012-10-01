@@ -28,7 +28,6 @@
 
 				<!-- Integration test modules -->
 				<module>integration-tests</module>
-				<module>integration-tests/integration-webapps/claims</module>
 				<module>integration-tests/jboss-as7</module>
 				<module>integration-tests/jboss-as5</module>
 <!-- 				<module>integration-tests/jboss-as5-cxf</module> -->
