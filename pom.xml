@@ -49,9 +49,25 @@
 
 				<!-- Integration test modules -->
 				<module>integration-tests</module>
-				<module>integration-tests/integration-webapps/claims</module>
 				<module>integration-tests/eap-5</module>
 				<!-- module>integration-tests/eap-5-cxf</module -->
+			</modules>
+		</profile>
+		<profile>
+			<id>jbas7</id>
+			<modules>
+				<module>parent</module>
+
+				<!-- Unit test modules -->
+				<module>unit-tests/util</module>
+				<module>unit-tests/saml</module>
+				<module>unit-tests/ws-trust</module>
+				<module>unit-tests/xacml</module>
+				<module>unit-tests/trust</module>
+
+				<!-- Integration test modules -->
+				<module>integration-tests</module>
+				<module>integration-tests/jboss-as7</module>
 			</modules>
 		</profile>
 	</profiles>
