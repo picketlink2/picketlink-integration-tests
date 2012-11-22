@@ -20,16 +20,22 @@
 				<mkdir dir="${jboss.as.picketlink.lib.dir}" />
 
 				<if>
-					<available file="${picketlink.dist.dir}" type="dir" />
+ 					<istrue value="${picketlink.skip.lib.copy}"/>
 					<then>
-						<echo>PicketLink libraries copied from ${picketlink.dist.dir}</echo>
-						<copy todir="${jboss.as.picketlink.lib.dir}">
-							<fileset dir="${picketlink.dist.dir}">
-								<include name="picketlink-core-*.jar"/>
-								<include name="picketlink-${picketlink.binding}-*.jar"/>
-							</fileset>
-						</copy>
+						<echo message="Picketlink libraries are not copied to the container." />
 					</then>
+					<elseif>
+						<available file="${picketlink.dist.dir}" type="dir" />
+						<then>
+							<echo>PicketLink libraries copied from ${picketlink.dist.dir}</echo>
+							<copy todir="${jboss.as.picketlink.lib.dir}">
+								<fileset dir="${picketlink.dist.dir}">
+									<include name="picketlink-core-*.jar"/>
+									<include name="picketlink-${picketlink.binding}-*.jar"/>	
+								</fileset>
+							</copy>
+						</then>
+ 					</elseif>
 					<else>
 						<echo>PicketLink libraries copied from ${maven.repo.local}</echo>
 
@@ -44,7 +50,10 @@
 
 		<echo>Copying custom configuration files from ${basedir}/dist/custom-conf</echo>
 		<if>
-			<available file="${basedir}/dist/custom-conf" type="dir" />
+			<and>
+				<isfalse value="${picketlink.skip.lib.copy}"/>
+				<available file="${basedir}/dist/custom-conf" type="dir" />
+			</and>
 			<then>
 				<copy todir="${JBAS_CONFIG_ROOT}">
 					<fileset dir="${basedir}/dist/custom-conf" />

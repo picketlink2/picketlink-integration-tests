@@ -77,6 +77,10 @@
 									<value>${version.picketlink}</value>
 								</property>
 								<property>
+									<name>version.picketlink.quickstarts</name>
+									<value>${version.picketlink.quickstarts}</value>
+								</property>
+								<property>
 									<name>binding</name>
 									<value>${binding.server}</value>
 								</property>
