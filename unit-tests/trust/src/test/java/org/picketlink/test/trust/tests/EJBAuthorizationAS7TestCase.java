@@ -49,14 +49,17 @@ import org.w3c.dom.Element;
 import com.sun.security.sasl.Provider;
 
 /**
- * <p>Tests the invocation of EJBs protected by the {@link SAML2STSLoginModule}.</p>
+ * <p>
+ * Tests the invocation of EJBs protected by the {@link SAML2STSLoginModule}.
+ * </p>
  * 
- * @author Anil Saldhana
- * @since Oct 3, 2010
+ * TODO: Currently disabled because the SASL PLAIN mechanism is only available for JBoss AS 7.1.3+ and 7.2.0+.
+ * 
+ * @author <a href="mailto:psilva@redhat.com">Pedro Silva</a>
  */
 @RunWith(PicketLinkIntegrationTests.class)
 @TargetContainers({ "disabled" })
-public class EJBAuthorizationAS7TestCase extends TrustTestsBase  {
+public class EJBAuthorizationAS7TestCase extends TrustTestsBase {
 
     @Deployment(name = "ejb-test", testable = false)
     @TargetsContainer("jboss")
@@ -65,45 +68,59 @@ public class EJBAuthorizationAS7TestCase extends TrustTestsBase  {
 
         archive.addClass(EchoService.class);
         archive.addClass(EchoServiceImpl.class);
-        archive.addAsManifestResource(new File(EJBAuthorizationAS7TestCase.class.getClassLoader().getResource("jboss-deployment-structure.xml").getPath()));
-        archive.addAsResource(new File(EJBAuthorizationAS7TestCase.class.getClassLoader().getResource("props/sts-users.properties").getPath()), ArchivePaths.create("users.properties"));
-        archive.addAsResource(new File(EJBAuthorizationAS7TestCase.class.getClassLoader().getResource("props/sts-roles.properties").getPath()), ArchivePaths.create("roles.properties"));
-        
+        archive.addAsManifestResource(new File(EJBAuthorizationAS7TestCase.class.getClassLoader()
+                .getResource("jboss-deployment-structure.xml").getPath()));
+        archive.addAsResource(
+                new File(EJBAuthorizationAS7TestCase.class.getClassLoader().getResource("props/sts-users.properties").getPath()),
+                ArchivePaths.create("users.properties"));
+        archive.addAsResource(
+                new File(EJBAuthorizationAS7TestCase.class.getClassLoader().getResource("props/sts-roles.properties").getPath()),
+                ArchivePaths.create("roles.properties"));
+
         return archive;
     }
 
     @Test
     public void testSuccessfulEJBInvocation() throws Exception {
-        Hashtable<String, Object> env = new Hashtable<String, Object>();
-
+        // add the JDK SASL Provider that allows to use the PLAIN SASL Client
         Security.addProvider(new Provider());
 
         Element assertion = getAssertionFromSTS("UserA", "PassA");
-
+        
+        // JNDI environment configuration properties
+        Hashtable<String, Object> env = new Hashtable<String, Object>();
+        
         env.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
         env.put("java.naming.factory.initial", "org.jboss.naming.remote.client.InitialContextFactory");
         env.put("java.naming.provider.url", "remote://localhost:4447");
         env.put("jboss.naming.client.ejb.context", "true");
         env.put("jboss.naming.client.connect.options.org.xnio.Options.SASL_POLICY_NOPLAINTEXT", "false");
         env.put("javax.security.sasl.policy.noplaintext", "false");
-
+        
+        // provide the user principal and credential. The credential is the previously issued SAML assertion
         env.put(Context.SECURITY_PRINCIPAL, "admin");
         env.put(Context.SECURITY_CREDENTIALS, DocumentUtil.getNodeAsString(assertion));
-
+        
+        // create the JNDI Context and perform the authentication using the SAML2STSLoginModule
         Context context = new InitialContext(env);
-
+        
+        // lookup the EJB
         EchoService object = (EchoService) context.lookup("ejb-test/EchoServiceImpl!org.picketlink.test.trust.ejb.EchoService");
-
+        
+        // If everything is ok the Principal name will be added to the message
         Assert.assertEquals("Hi UserA", object.echo("Hi "));
     }
-    
-    @Test (expected=EJBAccessException.class)
-    public void testNotAuthorizedEJBInvocation() throws Exception {
-        Hashtable<String, Object> env = new Hashtable<String, Object>();
 
+    @Test(expected = EJBAccessException.class)
+    public void testNotAuthorizedEJBInvocation() throws Exception {
+        // add the JDK SASL Provider that allows to use the PLAIN SASL Client
         Security.addProvider(new Provider());
 
+        // issue a new SAML Assertion using the PicketLink STS
         Element assertion = getAssertionFromSTS("UserA", "PassA");
+
+        // JNDI environment configuration properties
+        Hashtable<String, Object> env = new Hashtable<String, Object>();
 
         env.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
         env.put("java.naming.factory.initial", "org.jboss.naming.remote.client.InitialContextFactory");
@@ -112,13 +129,17 @@ public class EJBAuthorizationAS7TestCase extends TrustTestsBase  {
         env.put("jboss.naming.client.connect.options.org.xnio.Options.SASL_POLICY_NOPLAINTEXT", "false");
         env.put("javax.security.sasl.policy.noplaintext", "false");
 
-        env.put(Context.SECURITY_PRINCIPAL, "admin");
+        // provide the user principal and credential. The credential is the previously issued SAML assertion
+        env.put(Context.SECURITY_PRINCIPAL, "UserA");
         env.put(Context.SECURITY_CREDENTIALS, DocumentUtil.getNodeAsString(assertion));
 
+        // create the JNDI Context and perform the authentication using the SAML2STSLoginModule
         Context context = new InitialContext(env);
 
+        // lookup the EJB
         EchoService object = (EchoService) context.lookup("ejb-test/EchoServiceImpl!org.picketlink.test.trust.ejb.EchoService");
 
+        // If everything is ok the Principal name will be added to the message
         Assert.assertEquals("Hi UserA", object.echoUnchecked("Hi "));
     }
 
