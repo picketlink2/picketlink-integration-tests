@@ -49,6 +49,7 @@
 
 				<!-- Integration test modules -->
 				<module>integration-tests</module>
+				<module>integration-tests/integration-webapps/claims</module>
 				<module>integration-tests/eap-5</module>
 				<!-- module>integration-tests/eap-5-cxf</module -->
 			</modules>
