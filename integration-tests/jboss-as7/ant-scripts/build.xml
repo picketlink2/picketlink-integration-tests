@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="build-jbas6">
 
-	<property name="JBAS7_PROFILE_DIR" location="${integration.tests.dir}/containers/jboss-as-7.1.1.Final/standalone/" />
+	<property name="JBAS7_PROFILE_DIR" location="${jboss.as.home}/standalone" />
 	<property name="JBAS_CONFIG_ROOT" location="${JBAS7_PROFILE_DIR}" />
 	<property name="JBAS7_DEPLOY" location="${JBAS7_PROFILE_DIR}/deployments" />
 
@@ -11,8 +11,8 @@
 	</target>
 	
 	<target name="unzip-jboss">
-		<echo>Unzip JBOSS AS 7</echo>
-		<unzip src="${basedir}/dist/jboss-as-7.1.1.Final.zip" dest="${integration.tests.dir}/containers" />
+		<echo>Unzip ${jbas7.dist.zip}</echo>
+		<unzip src="${basedir}/dist/${jbas7.dist.zip}" dest="${integration.tests.dir}/containers" />
 		<chmod dir="${integration.tests.dir}/containers" perm="ugo+rx" includes="**/*.sh" />
 		<copy todir="${jboss.as.home}/modules/org/jboss/security/xacml/main" file="${maven.repo.local}/org/jboss/security/jbossxacml/2.0.8.Final/jbossxacml-2.0.8.Final.jar" />
 		<copy todir="${jboss.as.home}/modules/org/apache/xalan/main" file="${maven.repo.local}/xalan/xalan/2.7.1/xalan-2.7.1.jar" />
