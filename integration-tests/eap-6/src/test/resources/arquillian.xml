@@ -1,0 +1,20 @@
+<arquillian>
+	<container qualifier="jboss" default="true">
+		<configuration>
+			<property name="jbossHome">${jboss.as.home}</property>
+			<property name="serverConfig">standalone.xml</property>
+			<property name="outputToConsole">false</property>
+			<property name="managementAddress">localhost</property>
+			<property name="managementPort">9999</property>
+			<property name="javaVmArguments">-Djboss.bind.address=localhost -Djboss.bind.address.management=localhost -Didp.url=http://localhost:8080/idp/
+				-Didp-sig.url=http://localhost:8080/idp-sig/
+				-Dsales-post.url=http://localhost:8080/sales-post/
+				-Dsales-saml11.url=http://localhost:8080/sales-saml11
+				-Dsales-post-valve.url=http://localhost:8080/sales-post-valve/
+				-Dsales-post-sig.url=http://localhost:8080/sales-post-sig/
+				-Demployee.url=http://localhost:8080/employee/
+				-Demployee-redirect-valve.url=http://localhost:8080/employee-redirect-valve/
+				-Demployee-sig.url=http://localhost:8080/employee-sig/</property>
+		</configuration>
+	</container>
+</arquillian>

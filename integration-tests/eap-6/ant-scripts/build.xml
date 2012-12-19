@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="build-eap6">
+
+	<property name="JBAS7_PROFILE_DIR" location="${jboss.as.home}/standalone" />
+	<property name="JBAS_CONFIG_ROOT" location="${JBAS7_PROFILE_DIR}" />
+	<property name="JBAS7_DEPLOY" location="${JBAS7_PROFILE_DIR}/deployments" />
+
+	<target name="prepare-test-environment" depends="unzip-jboss">
+		<echo>Integration Test Environment for EAP6 PREPARED</echo>
+		<ant antfile="../ant-scripts/build.xml" inheritAll="true" />
+	</target>
+	
+	<target name="unzip-jboss">
+		<ant antfile="../ant-scripts/build.xml" inheritAll="true" target="download-binary-distribution">
+			<property name="download.from.url" value="${eap6-dist-url}"/>
+			<property name="target.file" value="${eap6-dist-zip}"/>
+			<property name="download.to.dir" value="${basedir}/dist"/>
+		</ant>	
+		<echo>Unzip JBOSS EAP6 (${eap6-dist-zip})</echo>
+		<unzip src="${basedir}/dist/${eap6-dist-zip}" dest="${integration.tests.dir}/containers" />
+		<chmod dir="${integration.tests.dir}/containers" perm="ugo+rx" includes="**/*.sh" />
+	</target>
+
+</project>
