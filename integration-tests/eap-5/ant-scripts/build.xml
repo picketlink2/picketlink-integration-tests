@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<project name="build-jbas5">
+<project name="build-eap5">
 
 	<property name="JBAS5_PROFILE_DIR" location="${jboss.as.home}/server/default" />
 	<property name="JBAS_CONFIG_ROOT" location="${JBAS5_PROFILE_DIR}" />
@@ -18,6 +18,7 @@
 		</ant>	
 		<echo>Unzip JBOSS EAP5 (${eap5-dist-zip})</echo>
 		<unzip src="${basedir}/dist/${eap5-dist-zip}" dest="${integration.tests.dir}/containers" />
+		<chmod dir="${integration.tests.dir}/containers" perm="ugo+rx" includes="**/*.sh" />
 	</target>
 
 	<target name="copy-trust-settings-jbas5">
