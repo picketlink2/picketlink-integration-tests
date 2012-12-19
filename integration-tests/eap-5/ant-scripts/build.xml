@@ -11,6 +11,11 @@
 	</target>
 
 	<target name="unzip-jboss">
+		<ant antfile="../ant-scripts/build.xml" inheritAll="true" target="download-binary-distribution">
+			<property name="download.from.url" value="${eap5-dist-url}"/>
+			<property name="target.file" value="${eap5-dist-zip}"/>
+			<property name="download.to.dir" value="${basedir}/dist"/>
+		</ant>	
 		<echo>Unzip JBOSS EAP5 (${eap5-dist-zip})</echo>
 		<unzip src="${basedir}/dist/${eap5-dist-zip}" dest="${integration.tests.dir}/containers" />
 	</target>

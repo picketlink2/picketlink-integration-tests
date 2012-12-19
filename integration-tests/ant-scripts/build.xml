@@ -62,5 +62,18 @@
 		</if>
 	</target>
 
+	<target name="download-binary-distribution">
+		<echo>Download of binary distrubution ${download.from.url}</echo>
+		<if>
+			<available file="${download.to.dir}/${target.file}" type="file" />
+			<then>
+				<echo>${target.file} already in place, skipping download</echo>
+			</then>
+			<else>
+				<get src="${download.from.url}" dest="${download.to.dir}/${target.file}" verbose="off" />
+				<echo>${target.file} downloaded to ${download.to.dir}</echo> 
+			</else>
+		</if>
+	</target>
 
 </project>

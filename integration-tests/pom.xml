@@ -21,7 +21,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<inherited>true</inherited>
-				<version>1.6</version>
+				<version>1.7</version>
 				<!-- This execution prepares a distribution package for the subsystem. -->
 				<executions>
 					<execution>
