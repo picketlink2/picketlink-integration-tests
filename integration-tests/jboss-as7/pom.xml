@@ -210,6 +210,12 @@
 												<include>module.xml</include>
 											</includes>
 											<stylesheet>src/test/resources/xslt/changePicketLinkModule.xslt</stylesheet>
+											<parameters>
+												<parameter>
+													<name>picketlink_version</name>
+													<value>${version.picketlink}</value>
+												</parameter>
+											</parameters>
 										</transformationSet>
 										This should be removed when AS7 is updated the jbossxacml module 
 											is updated with 2.0.8

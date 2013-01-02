@@ -4,7 +4,6 @@ import static org.picketlink.test.integration.util.TestUtil.getTargetURL;
 
 import org.junit.runner.RunWith;
 import org.picketlink.test.integration.util.PicketLinkIntegrationTests;
-import org.picketlink.test.integration.util.TargetContainers;
 
 @RunWith(PicketLinkIntegrationTests.class)
 public abstract class AbstractSAMLIntegrationTests {

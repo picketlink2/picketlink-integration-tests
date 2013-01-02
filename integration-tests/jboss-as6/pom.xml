@@ -171,7 +171,7 @@
 		<binding.server>jboss-as5</binding.server>
 		<picketlink.binding>jbas5</picketlink.binding>
 		<jboss.as.home>${integration.tests.containers.dir}/jboss-${version.jboss_as6}</jboss.as.home>
-		<jboss.as.picketlink.lib.dir>${jboss.as.home}/server/default/deploy/picketlink</jboss.as.picketlink.lib.dir>
+		<jboss.as.picketlink.lib.dir>${jboss.as.home}/common/lib</jboss.as.picketlink.lib.dir>
 	</properties>
 
 	<build>

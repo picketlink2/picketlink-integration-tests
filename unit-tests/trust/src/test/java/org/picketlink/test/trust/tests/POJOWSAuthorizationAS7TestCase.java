@@ -39,7 +39,7 @@ import org.picketlink.test.integration.util.TargetContainers;
  * @since Oct 3, 2010
  */
 @RunWith(PicketLinkIntegrationTests.class)
-@TargetContainers({"jbas7"})
+@TargetContainers({"jbas7", "eap6"})
 public class POJOWSAuthorizationAS7TestCase extends AbstractPOJOWSAuthorizationTestCase {
 
     @Deployment(name = "pojo-test", testable = false)

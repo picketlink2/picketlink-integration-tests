@@ -61,7 +61,7 @@ import org.picketlink.trust.jbossws.handler.BinaryTokenHandler;
  * @author Anil.Saldhana@redhat.com
  * @since Apr 5, 2011
  */
-@TargetContainers ({"jbas7"})
+@TargetContainers ({"jbas7", "eap6"})
 public class STSWSBinaryTokenAS7TestCase extends AbstractSTSWSBinaryTokenTestCase {
   
     @Deployment(name = "ws-binarybean.jar", testable = false)

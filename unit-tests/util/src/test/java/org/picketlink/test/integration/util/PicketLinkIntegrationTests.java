@@ -77,7 +77,7 @@ public class PicketLinkIntegrationTests extends Arquillian {
         if (isSupported) {
             super.run(notifier);
         } else {
-            logger.info("Test class " + getTestClass().getName() + " will be ignored for binding " + currentModule);
+            logger.info("Test class " + getTestClass().getName() + " will be ignored for module " + currentModule + ". It has no @TargetContainers contained in current module name.");
         }
     }
 

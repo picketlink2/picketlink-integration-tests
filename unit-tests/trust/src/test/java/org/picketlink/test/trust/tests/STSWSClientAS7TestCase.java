@@ -37,7 +37,7 @@ import org.picketlink.test.integration.util.TargetContainers;
  * @author Anil Saldhana
  * @since Oct 3, 2010
  */
-@TargetContainers ({"jbas7"})
+@TargetContainers ({"jbas7", "eap6"})
 public class STSWSClientAS7TestCase extends AbstractSTSWSClientTestCase {
     
     @Deployment(name = "ws-testbean", testable = false)
@@ -52,6 +52,8 @@ public class STSWSClientAS7TestCase extends AbstractSTSWSClientTestCase {
         archive.addAsResource(new File("../../unit-tests/trust/target/test-classes/props/sts-users.properties"), ArchivePaths.create("users.properties"));
         archive.addAsResource(new File("../../unit-tests/trust/target/test-classes/props/sts-roles.properties"), ArchivePaths.create("roles.properties"));
         archive.addAsResource(new File("../../unit-tests/trust/target/test-classes/props/sts-config.properties"), ArchivePaths.create("sts-config.properties"));
+
+        archive.addClass(org.picketlink.test.trust.ws.WSTest.class);
         
         return archive;
     }

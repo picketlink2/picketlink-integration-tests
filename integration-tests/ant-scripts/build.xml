@@ -17,8 +17,6 @@
 			<then>
 				<echo>Copying PicketLink libraries (${picketlink.binding}) to ${jboss.as.picketlink.lib.dir}</echo>
 
-				<mkdir dir="${jboss.as.picketlink.lib.dir}" />
-
 				<if>
  					<istrue value="${picketlink.skip.lib.copy}"/>
 					<then>
@@ -28,6 +26,11 @@
 						<available file="${picketlink.dist.dir}" type="dir" />
 						<then>
 							<echo>PicketLink libraries copied from ${picketlink.dist.dir}</echo>
+							<delete>
+								<fileset dir="${jboss.as.picketlink.lib.dir}">
+		    						<include name="picketlink-*.jar"/>
+								</fileset>
+							</delete>
 							<copy todir="${jboss.as.picketlink.lib.dir}">
 								<fileset dir="${picketlink.dist.dir}">
 									<include name="picketlink-core-*.jar"/>
@@ -38,7 +41,11 @@
  					</elseif>
 					<else>
 						<echo>PicketLink libraries copied from ${maven.repo.local}</echo>
-
+						<delete>
+							<fileset dir="${jboss.as.picketlink.lib.dir}">
+	    						<include name="picketlink-*.jar"/>
+							</fileset>
+						</delete>
 						<copy todir="${jboss.as.picketlink.lib.dir}" >
 							<fileset dir="${maven.repo.local}/org/picketlink/picketlink-core/${version.picketlink}" includes="picketlink-core-${version.picketlink}.jar"/>
 							<fileset dir="${maven.repo.local}/org/picketlink/distribution/picketlink-${picketlink.binding}/${version.picketlink}" includes="picketlink-${picketlink.binding}-${version.picketlink}.jar"/>
