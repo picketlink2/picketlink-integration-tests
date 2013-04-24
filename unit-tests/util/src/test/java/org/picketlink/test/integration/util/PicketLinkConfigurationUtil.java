@@ -140,11 +140,8 @@ public class PicketLinkConfigurationUtil {
 
             jks.setCertificateEntry(alias, certificate);
 
-            File file = new File("/tmp/tmpjks.jks");
-
-            if (file.exists()) {
-                file.delete();
-            }
+            File file = File.createTempFile("tmpjks", "jks");
+            file.deleteOnExit();
 
             FileOutputStream stream = new FileOutputStream(file);
 
@@ -152,8 +149,7 @@ public class PicketLinkConfigurationUtil {
 
             stream.close();
 
-            final FileInputStream fileInputStream = new FileInputStream("/tmp/tmpjks.jks");
-
+            final FileInputStream fileInputStream = new FileInputStream(file);
             sp.delete(keystore.getPath());
 
             sp.add(new Asset() {
