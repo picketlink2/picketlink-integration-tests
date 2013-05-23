@@ -22,7 +22,7 @@ public abstract class AbstractWSTrustIntegrationTests {
     public static WebArchive createSTSDeployment() throws GeneralSecurityException, IOException {
         WebArchive sts = MavenArtifactUtil.getQuickstartsMavenArchive("picketlink-sts");
         
-        addValidatingAlias(sts, "/WEB-INF/classes/picketlink-sts.xml", getServerAddress(), getServerAddress());
+        addValidatingAlias(sts, "/WEB-INF/classes/picketlink.xml", getServerAddress(), getServerAddress());
         addKeyStoreAlias(sts, "/WEB-INF/classes/sts_keystore.jks", "sts", "testpass", getServerAddress());
         
         return sts;
