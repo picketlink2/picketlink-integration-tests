@@ -342,36 +342,6 @@
 										</artifactItems>
 									</configuration>
 								</execution>
-								<execution>
-									<id>copy-test-deps-to-eap5</id>
-									<phase>package</phase>
-									<goals>
-										<goal>copy</goal>
-									</goals>
-									<configuration>
-										<artifactItems>
-											<artifactItem>
-												<groupId>org.apache.httpcomponents</groupId>
-												<artifactId>httpclient</artifactId>
-												<version>4.2.1</version>
-												<type>jar</type>
-												<overWrite>true</overWrite>
-												<destFileName>httpclient.jar</destFileName>
-												<outputDirectory>${project.build.directory}/integration-tests/containers/${eap5-dir-structure}/common/lib</outputDirectory>
-											</artifactItem>
-											<artifactItem>
-												<groupId>org.apache.httpcomponents</groupId>
-												<artifactId>httpcore</artifactId>
-												<version>4.2.1</version>
-												<type>jar</type>
-												<overWrite>true</overWrite>
-												<destFileName>httpcore.jar</destFileName>
-												<outputDirectory>${project.build.directory}/integration-tests/containers/${eap5-dir-structure}/common/lib</outputDirectory>
-											</artifactItem>
-										</artifactItems>
-									</configuration>
-									
-								</execution>
 							</executions>
 						</plugin>
 					</plugins>

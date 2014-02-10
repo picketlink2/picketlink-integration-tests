@@ -107,6 +107,31 @@
 					</additionalClasspathElements>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>xml-maven-plugin</artifactId>
+				<version>1.0</version>
+				<executions>
+					<execution>
+						<phase>process-test-classes</phase>
+						<goals>
+							<goal>transform</goal>
+						</goals>
+						<configuration>
+							<transformationSets>
+								<transformationSet>
+									<dir>${jboss.as.home}/server/default/deployers/jbossweb.deployer/META-INF</dir>
+									<outputDir>${jboss.as.home}/server/default/deployers/jbossweb.deployer/META-INF</outputDir>
+									<includes>
+										<include>war-deployers-jboss-beans.xml</include>
+									</includes>
+									<stylesheet>src/test/resources/addPicketLinkAuthenticator.xslt</stylesheet>
+								</transformationSet>
+							</transformationSets>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
@@ -131,6 +156,25 @@
 										</versionRange>
 										<goals>
 											<goal>run</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.mojo
+										</groupId>
+										<artifactId>
+											xml-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.0,)
+										</versionRange>
+										<goals>
+											<goal>transform</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
